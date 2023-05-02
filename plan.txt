@@ -1,0 +1,9 @@
+1. create CRUD page for books
+
+books: id, title, release date, author, genre, is it available, borrower's user ID
+
+
+
+
+
+When the book QR code is scanned, a link is given to a controller action which checks if the book is available. If it is, redirect user to a view thats responsible for book giving, else redirect to book returning.

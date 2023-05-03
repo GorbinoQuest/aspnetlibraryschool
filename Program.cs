@@ -12,7 +12,14 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy("IsLibrarian", policy => policy.RequireClaim("Role", "Librarian"));
+        });
 
 var app = builder.Build();
 
@@ -33,6 +40,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

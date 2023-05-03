@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Library.Data;
 using Library.Models;
@@ -46,6 +47,7 @@ namespace Library.Controllers
         }
 
         // GET: Library/Create
+        [Authorize(Policy="IsLibrarian")]
         public IActionResult Create()
         {
             return View();
@@ -56,6 +58,7 @@ namespace Library.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy="IsLibrarian")]
         public async Task<IActionResult> Create([Bind("Title,BookAuthor,ReleaseDate,Genre")] BookModel bookModel)
         {
             if (ModelState.IsValid)
@@ -88,6 +91,7 @@ namespace Library.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "IsLibrarian")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,BookAuthor,ReleaseDate,Genre,IsAvailable")] BookModel bookModel)
         {
             if (id != bookModel.Id)
@@ -119,6 +123,7 @@ namespace Library.Controllers
         }
 
         // GET: Library/Delete/5
+        [Authorize(Policy = "IsLibrarian")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Books == null)
@@ -137,6 +142,7 @@ namespace Library.Controllers
         }
 
         // POST: Library/Delete/5
+        [Authorize(Policy = "IsLibrarian")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

@@ -11380,25 +11380,26 @@
     ]
   },
   "packageFolders": {
-    "/home/miuzore/.nuget/packages/": {}
+    "C:\\Users\\Dell\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/miuzore/projects/mokyklosWEB/Library/Library.csproj",
+      "projectUniqueName": "C:\\Users\\Dell\\Documents\\projects\\aspnetlibraryschool\\aspnetlibraryschool\\Library.csproj",
       "projectName": "Library",
-      "projectPath": "/home/miuzore/projects/mokyklosWEB/Library/Library.csproj",
-      "packagesPath": "/home/miuzore/.nuget/packages/",
-      "outputPath": "/home/miuzore/projects/mokyklosWEB/Library/obj/",
+      "projectPath": "C:\\Users\\Dell\\Documents\\projects\\aspnetlibraryschool\\aspnetlibraryschool\\Library.csproj",
+      "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Dell\\Documents\\projects\\aspnetlibraryschool\\aspnetlibraryschool\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/miuzore/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
-        "/home/miuzore/.nuget/NuGet/Microsoft.VisualStudio.Web.CodeGeneration.Design": {},
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -11465,12 +11466,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[7.0.3, 7.0.3]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -11479,7 +11474,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/7.0.103/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
       }
     }
   }

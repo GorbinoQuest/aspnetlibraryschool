@@ -92,7 +92,7 @@ namespace Library.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "IsLibrarian")]
-        public async Task<IActionResult> Edit(int id, [Bind("Title,BookAuthor,ReleaseDate,Genre,IsAvailable")] BookModel bookModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id","Title,BookAuthor,ReleaseDate,Genre,IsAvailable")] BookModel bookModel)
         {
             if (id != bookModel.Id)
             {

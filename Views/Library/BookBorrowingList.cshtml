@@ -4,6 +4,7 @@
     ViewData["Title"] = "BookBorrowingList";
 }
 
+
 <h1>BookBorrowingList</h1>
 
 <table class="table">
@@ -50,4 +51,9 @@
 }
     </tbody>
 </table>
+@if(ViewData["id"] != null)
+{
+    <a class="btn btn-secondary" asp-action="Details" asp-route-id="@ViewData["id"]">Atgal</a>
+}
+
 

@@ -166,6 +166,7 @@ namespace Library.Controllers
         {
             if(id != null)
             {
+            ViewData["id"] = id;
             return _context.BookBorrowings != null ? 
                 View(await _context.BookBorrowings
                         .Include(f => f.Book)

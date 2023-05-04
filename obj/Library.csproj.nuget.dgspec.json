@@ -1,27 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Dell\\Documents\\projects\\aspnetlibraryschool\\aspnetlibraryschool\\Library.csproj": {}
+    "/home/miuzore/projects/mokyklosWEB/Library/Library.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Dell\\Documents\\projects\\aspnetlibraryschool\\aspnetlibraryschool\\Library.csproj": {
+    "/home/miuzore/projects/mokyklosWEB/Library/Library.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Dell\\Documents\\projects\\aspnetlibraryschool\\aspnetlibraryschool\\Library.csproj",
+        "projectUniqueName": "/home/miuzore/projects/mokyklosWEB/Library/Library.csproj",
         "projectName": "Library",
-        "projectPath": "C:\\Users\\Dell\\Documents\\projects\\aspnetlibraryschool\\aspnetlibraryschool\\Library.csproj",
-        "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Dell\\Documents\\projects\\aspnetlibraryschool\\aspnetlibraryschool\\obj\\",
+        "projectPath": "/home/miuzore/projects/mokyklosWEB/Library/Library.csproj",
+        "packagesPath": "/home/miuzore/.nuget/packages/",
+        "outputPath": "/home/miuzore/projects/mokyklosWEB/Library/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/miuzore/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "/home/miuzore/.nuget/NuGet/Microsoft.VisualStudio.Web.CodeGeneration.Design": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -88,6 +87,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[7.0.3, 7.0.3]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -96,7 +101,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/7.0.103/RuntimeIdentifierGraph.json"
         }
       }
     }

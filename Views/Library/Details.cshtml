@@ -1,4 +1,6 @@
 @model Library.Models.BookModel
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
 
 @{
     ViewData["Title"] = "Details";
@@ -43,6 +45,26 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @if ((await AuthorizationService.AuthorizeAsync(User, "IsLibrarian")).Succeeded)
+    {
+        @if(@Model.IsAvailable)
+        {
+            <a class="btn btn-primary" asp-action="BorrowBook" asp-route-originalId="@Model?.Id">Knygos išdavimas</a>
+        }
+        else
+        {
+            <a class="btn btn-primary" asp-action="ReturnBook" asp-route-originalId="@Model?.Id">Knygos gražinimas</a>
+        }
+
+        <a class="btn btn-info" asp-action="BookBorrowingList" asp-route-id="@Model?.Id">Istorija</a> 
+    }
+</div>
+<br>
+<div>
+    @if ((await AuthorizationService.AuthorizeAsync(User, "IsLibrarian")).Succeeded)
+    {
+        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.Id">Keisti</a>
+        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Trinti</a>
+    }
+    <a class="btn btn-secondary" asp-action="Index">Atgal į sąrašą</a>
 </div>

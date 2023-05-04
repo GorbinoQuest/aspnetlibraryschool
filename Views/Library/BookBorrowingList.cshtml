@@ -1,0 +1,53 @@
+@model IEnumerable<Library.Models.BorrowingEntryModel>
+
+@{
+    ViewData["Title"] = "BookBorrowingList";
+}
+
+<h1>BookBorrowingList</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Knyga
+            </th>
+            <th>
+                Paėmimo data
+            </th>
+            <th>
+                Mokinio Info
+            </th>
+            <th>
+                Gražinimo data
+            </th>
+            <th>
+                Komentaras
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Book.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WhenBorrowed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.FullName)
+                @Html.DisplayFor(modelItem => item.User.Group.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WhenReturned)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+

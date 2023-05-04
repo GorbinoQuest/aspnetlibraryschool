@@ -1,0 +1,48 @@
+@model Library.Models.BorrowingEntryModel
+
+@{
+    ViewData["Title"] = "ReturnBook";
+}
+
+<h1>ReturnBook</h1>
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            Skolininkas: 
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.FullName)
+        </dd>
+        <dt class="col-sm-2">
+            Nuo kada:
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.WhenBorrowed)
+        </dd>
+    </dl>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Library" asp-action="ConfirmReturnBook" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Book.Id" />
+            <div class="form-group">
+                <span>Komentaras (nebūtina)</span>
+                <input asp-for="Comment" class="form-control" />
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Gražinti" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<br>
+<div>
+    <a class="btn btn-secondary" asp-action="Details" asp-route-id="@Model?.Book.Id">Atgal</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

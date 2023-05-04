@@ -14,5 +14,11 @@ namespace Library.Data
 
         public string Role { get; set; } = "User";
         public virtual ICollection<BorrowingEntryModel> BorrowedBooks { get; set; } = new List<BorrowingEntryModel>();
+
+        public string FullName {
+            get{
+                return $"{FirstName} {LastName}";
+            }
+        }
     }
 }

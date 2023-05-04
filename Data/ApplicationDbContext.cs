@@ -28,9 +28,5 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .WithOne(g => g.Group)
             .OnDelete(DeleteBehavior.SetNull);
 
-        modelBuilder.Entity<BorrowingEntryModel>()
-            .HasOne(u => u.User)
-            .WithMany();
-
     }
 }

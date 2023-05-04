@@ -12,7 +12,6 @@ namespace Library.Data
         [PersonalData]
         public GroupModel? Group {get;set;}
 
-        public string Role { get; set; } = "User";
         public virtual ICollection<BorrowingEntryModel> BorrowedBooks { get; set; } = new List<BorrowingEntryModel>();
 
         public string FullName {

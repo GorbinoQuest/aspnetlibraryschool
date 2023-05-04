@@ -11380,24 +11380,25 @@
     ]
   },
   "packageFolders": {
-    "/home/user/.nuget/packages/": {}
+    "/home/miuzore/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/user/projects/aspnetlibraryschool/Library.csproj",
+      "projectUniqueName": "/home/miuzore/projects/mokyklosWEB/Library/Library.csproj",
       "projectName": "Library",
-      "projectPath": "/home/user/projects/aspnetlibraryschool/Library.csproj",
-      "packagesPath": "/home/user/.nuget/packages/",
-      "outputPath": "/home/user/projects/aspnetlibraryschool/obj/",
+      "projectPath": "/home/miuzore/projects/mokyklosWEB/Library/Library.csproj",
+      "packagesPath": "/home/miuzore/.nuget/packages/",
+      "outputPath": "/home/miuzore/projects/mokyklosWEB/Library/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/user/.nuget/NuGet/NuGet.Config"
+        "/home/miuzore/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
+        "/home/miuzore/.nuget/NuGet/Microsoft.VisualStudio.Web.CodeGeneration.Design": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -11467,7 +11468,7 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[7.0.5, 7.0.5]"
+            "version": "[7.0.3, 7.0.3]"
           }
         ],
         "frameworkReferences": {
@@ -11478,7 +11479,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/7.0.203/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/7.0.103/RuntimeIdentifierGraph.json"
       }
     }
   }

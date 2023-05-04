@@ -35,7 +35,10 @@
                         @if ((await AuthorizationService.AuthorizeAsync(User, "IsLibrarian")).Succeeded)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Library" asp-action="BookBorrowingList" asp-route-id="">Ataskaita</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="library" asp-action="bookborrowinglist" asp-route-id="">Ataskaita</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="GroupManagement" asp-action="Index" asp-route-id="">Grupės</a>
                             </li>
                         }
                     </ul>

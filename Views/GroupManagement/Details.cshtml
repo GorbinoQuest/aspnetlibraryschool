@@ -5,32 +5,59 @@
 }
 
 <h1>Details</h1>
-
 <div>
-    <h4>GroupModel</h4>
-    <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+        <dt class="col-sm-5">
+            Grupės pavadinimas
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
+        <dt class="col-sm-5">
+            Grupės auklėtojas
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.GroupTeacherName)
+        </dd>
+        <dt class="col-sm-5">
+            Pabaigos data
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.EndDate)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GroupTeacherName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GroupTeacherName)
-        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.Id">Keisti grupę</a>
+    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Naikinti grupę</a>
 </div>
+
+<br>
+
+
+<h1>Žmonės, priklausantys grupei:</h1>
+
+<a class="btn btn-primary" asp-action="AddUser" asp-route-id="@Model?.Id">Pridėti mokinius</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Mokinio ID
+            </th>
+            <th>
+                Vardas
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Members) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -3,6 +3,7 @@ using System;
 using Library.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Library.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230504105701_RemoveUselessUserField")]
+    partial class RemoveUselessUserField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -111,8 +114,8 @@ namespace Library.Data.Migrations
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ReleaseDate")
-                        .HasColumnType("INTEGER");
+                    b.Property<DateTime?>("ReleaseDate")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -160,7 +163,8 @@ namespace Library.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("EndDate")
+                    b.Property<string>("EndDate")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("GroupTeacherName")

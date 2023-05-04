@@ -1,0 +1,59 @@
+@model Library.Models.GroupModel
+
+@{
+    ViewData["Title"] = "AddUser";
+}
+
+<h1>AddUser</h1>
+
+<h4>GroupModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddUser" method="post">
+            <div class="text-danger"></div>
+            <input for="id" value="@Model.Id" hidden/>
+            <div class="form-group">
+                <label>Pasirinkite, ką pridėti/pašalinti iš grupės:</label>
+                <div class="checkbox-list">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Pilnas Vardas</th>
+                                <th>Grupė</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in ViewBag.UserList)
+                            {
+                            <div class="checkbox">
+                                <tr>
+                                    <td>
+                                        <label>
+                                            <input type="checkbox" name="selectedUsers" value="@user.Id" @(Model.Members.Contains(user) ? "checked" : "") />
+                                            @user.FullName
+                                        </label>
+                                    </td>
+                                    <td>
+                                        @user.Group?.Name
+                                    </td>
+                                </tr>
+                            </div>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Atnaujinti" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a class="btn btn-secondary" asp-action="Details" asp-route-id="@Model?.Id">Atgal į grupę</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,15 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Library.Data;
 using Library.Models;
 
 namespace Library.Controllers
 {
+    [Authorize(Policy = "IsLibrarian")]
     public class GroupManagement : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -36,6 +39,7 @@ namespace Library.Controllers
             }
 
             var groupModel = await _context.Groups
+                .Include(m => m.Members)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (groupModel == null)
             {
@@ -153,6 +157,68 @@ namespace Library.Controllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+        //GET GroupManagement/AddUser
+        public async Task<IActionResult> AddUser(int id)
+        {
+            if (id == null || _context.Groups == null)
+            {
+                return NotFound();
+            }
+
+            //get the group model
+            var groupModel = await _context.Groups
+                .Include(m => m.Members)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (groupModel == null)
+            {
+                return NotFound();
+            }
+
+            //get all users that have librarian role claim, then filter them out. Librarians aren't people (sorry).
+            var idsToFilter = await _context.UserClaims
+                .Where(c => c.ClaimType=="Role" && c.ClaimValue == "Librarian")
+                .Select(c => c.UserId)
+                .ToListAsync();
+
+            var userList = await _context.Users
+                .Where(u => !idsToFilter.Contains(u.Id))
+                .Include(u => u.Group)
+                .ToListAsync();
+
+            ViewBag.UserList = userList;
+            
+            return View(groupModel);
+        }
+        [HttpPost, ActionName("AddUser")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateGroupUsers(int id, string[] selectedUsers)
+        {
+            if (id == null || _context.Groups == null)
+            {
+                return NotFound();
+            }
+
+            var groupModel = await _context.Groups
+                .Include(m => m.Members)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (groupModel == null)
+            {
+                return NotFound();
+            }
+            //selects all users who have the IDs received from the form
+            var users = await _context.Users.Where(u => selectedUsers.Contains(u.Id)).ToListAsync();
+            //sets all Members to be the selected users
+            groupModel.Members = users;
+
+            if(TryValidateModel(groupModel))
+            {
+                _context.Groups.Update(groupModel);
+                _context.SaveChanges();
+            }
+            
+            return RedirectToAction("Details", "GroupManagement", new {id = id});
         }
 
         private bool GroupModelExists(int id)

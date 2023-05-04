@@ -15,8 +15,7 @@ public class BookModel
     public string Title {get;set;}
     [Required]
     public string BookAuthor {get;set;}
-    [DataType(DataType.Date)]
-    public DateTime? ReleaseDate {get;set;}
+    public int? ReleaseDate {get;set;}
     [Required]
     public string Genre {get;set;}
     

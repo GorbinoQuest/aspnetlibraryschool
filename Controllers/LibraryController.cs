@@ -172,6 +172,7 @@ namespace Library.Controllers
                         .Include(f => f.Book)
                         .Include(f => f.User)
                         .Where(f => f.Book.Id == id)
+                        .OrderByDescending(f => f.Id)
                         .ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.BookBorrowings'  is null.");
             }
@@ -181,6 +182,7 @@ namespace Library.Controllers
                     View(await _context.BookBorrowings
                         .Include(f => f.Book)
                         .Include(f => f.User)
+                        .OrderByDescending(f => f.Id)
                         .ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.BookBorrowings'  is null.");
             }
@@ -297,7 +299,6 @@ namespace Library.Controllers
                     }
                 }
             }
-
             
             return RedirectToAction("Details","Library", new {id = borrowingEntryModel.Book.Id} );
         }

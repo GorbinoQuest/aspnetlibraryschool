@@ -1,7 +1,4 @@
-1. create CRUD page for books
-
-books: id, title, release date, author, genre, is it available, borrower's user ID
-
+Create group management system, where librarian can create new groups and view users who are inside the group.
 
 
 

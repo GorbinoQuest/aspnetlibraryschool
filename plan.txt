@@ -1,5 +1,6 @@
 Add Search bar and null group field for all users in the group once group gets removed
-
+Add Group selection box in registration to set their group value, can be nullable
+Add a way to delete users
 
 
 

@@ -23,6 +23,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Library.Areas.Identity.Pages.Account
 {
+    [Authorize(Policy="IsLibrarian")]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -104,10 +105,10 @@ namespace Library.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
+            //[DataType(DataType.Password)]
+            //[Display(Name = "Confirm password")]
+            //[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            //public string ConfirmPassword { get; set; }
         }
 
 
@@ -121,12 +122,15 @@ namespace Library.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ModelState.Remove("Input.Password");
+            Input.Password = GeneratePassword(9);
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
 
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
+
 
                 await _userManager.AddClaimAsync(user, new Claim("Role", "User"));
 
@@ -156,7 +160,7 @@ namespace Library.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        //await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
                 }
@@ -164,6 +168,11 @@ namespace Library.Areas.Identity.Pages.Account
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
+            }
+            var allErrors = ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage));
+            foreach(var error in allErrors)
+            {
+                Console.WriteLine(error);
             }
 
             // If we got this far, something failed, redisplay form
@@ -191,6 +200,23 @@ namespace Library.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<ApplicationUser>)_userStore;
+        }
+
+        private static string GeneratePassword(int length = 8)
+        {
+            const string validChars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*?_-";
+            var random = new Random();
+
+            var chars = new char[length+2];
+            for (int i = 0; i < length; i++)
+            {
+                chars[i] = validChars[random.Next(validChars.Length)];
+            }
+            chars[length-2] = 'b';
+            chars[length-1] = 'A';
+            chars[length] = '0';
+            chars[length+1] = '!';
+            return new string(chars);
         }
     }
 }

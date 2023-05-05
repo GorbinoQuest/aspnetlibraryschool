@@ -159,7 +159,7 @@ namespace Library.Controllers
             return RedirectToAction(nameof(Index));
         }
         //GET GroupManagement/AddUser
-        public async Task<IActionResult> AddUser(int id)
+        public async Task<IActionResult> AddUser(int? id)
         {
             if (id == null || _context.Groups == null)
             {
@@ -192,7 +192,7 @@ namespace Library.Controllers
         }
         [HttpPost, ActionName("AddUser")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateGroupUsers(int id, string[] selectedUsers)
+        public async Task<IActionResult> UpdateGroupUsers(int? id, string[] selectedUsers)
         {
             if (id == null || _context.Groups == null)
             {

@@ -9,7 +9,7 @@
 <div class="row">
     <div class="col-md-4">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
+            <h2>Kurti naują vartotoją.</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
@@ -27,6 +27,13 @@
                 <input asp-for="Input.LastName" class="form-control" aria-required="true" placeholder="Pavardenis" />
                 <label asp-for="Input.LastName">Pavardė</label>
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <select asp-for="Input.SelectedGroupId" class="form-control" asp-items="@(new SelectList(Model.GroupList, "Id", "Name"))" >
+                    <option value="">Pasirinkite grupę</option>
+                </select>
+                <label asp-for="Input.SelectedGroupId">Grupė</label>
+                <span asp-validation-for="Input.SelectedGroupId" class="text-danger"></span>
             </div>
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>

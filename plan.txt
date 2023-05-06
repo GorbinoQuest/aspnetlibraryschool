@@ -1,6 +1,9 @@
-Add Search bar and null group field for all users in the group once group gets removed
-Add Group selection box in registration to set their group value, can be nullable
-Add a way to delete users
+Add Search bar in group add user thingy, so the amount of users gets filtered
+
+#Add a special registration page for adding another librarian
+Make another List page where librarian can mass delete multiple users.
+
+optionally make it so users don't need email to be registered, just the phone number.
 
 
 

@@ -13,7 +13,7 @@ namespace Library.Data
         public GroupModel? Group {get;set;}
     
         //Storing a randomly generated password here until self-service gets implemented in the future.
-        public string TempPassword{get;set;}
+        public string? TempPassword{get;set;}
 
         public virtual ICollection<BorrowingEntryModel> BorrowedBooks { get; set; } = new List<BorrowingEntryModel>();
 

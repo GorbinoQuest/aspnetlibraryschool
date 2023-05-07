@@ -27,6 +27,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Group)
             </th>
+           <!-- <th>
+                Rolė
+            </th>-->
             <th>
                 Pasirinkimai
             </th>
@@ -50,6 +53,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Group.Name)
             </td>
+            <!--<td>
+
+            </td> -->
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Keisti</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Trinti</a>

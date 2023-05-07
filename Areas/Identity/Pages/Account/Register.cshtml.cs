@@ -24,7 +24,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Library.Areas.Identity.Pages.Account
 {
-    [Authorize(Policy="IsLibrarian")]
+    [Authorize(Policy="IsLibrarianOrNoUsersRegistered")]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -102,6 +102,8 @@ namespace Library.Areas.Identity.Pages.Account
             [BindProperty]
             public int? SelectedGroupId {get;set;}
 
+            public bool IsUserLibrarian {get;set;}
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -116,10 +118,10 @@ namespace Library.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            //[DataType(DataType.Password)]
-            //[Display(Name = "Confirm password")]
-            //[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            //public string ConfirmPassword { get; set; }
+            [DataType(DataType.Password)]
+            [Display(Name = "Confirm password")]
+            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            public string ConfirmPassword { get; set; }
         }
 
 
@@ -134,8 +136,14 @@ namespace Library.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            ModelState.Remove("Input.Password");
-            Input.Password = GeneratePassword(9);
+            //As regular users are passwordless for now, we randomly generate the passwords right now.
+            if(!Input.IsUserLibrarian)
+            {
+                ModelState.Remove("Input.Password");
+                ModelState.Remove("Input.ConfirmPassword");
+                Input.Password = GeneratePassword(9);
+                Input.ConfirmPassword = Input.Password;
+            }
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
@@ -143,14 +151,23 @@ namespace Library.Areas.Identity.Pages.Account
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
                 
-                if(Input.SelectedGroupId != null)
+
+                string roleValue = "User";
+
+                if(!Input.IsUserLibrarian)
                 {
-                    user.Group = await _context.Groups.FindAsync(Input.SelectedGroupId);
+                    if(Input.SelectedGroupId != null)
+                    {
+                        user.Group = await _context.Groups.FindAsync(Input.SelectedGroupId);
+                    }
+                    user.TempPassword = Input.Password;
                 }
+                else
+                {
+                    roleValue = "Librarian";
+                }
+                await _userManager.AddClaimAsync(user, new Claim("Role", roleValue));
 
-                user.TempPassword = Input.Password;
-
-                await _userManager.AddClaimAsync(user, new Claim("Role", "User"));
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -194,6 +211,8 @@ namespace Library.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
+            GroupList = _context.Groups.ToList();
+
             return Page();
         }
 

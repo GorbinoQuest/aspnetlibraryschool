@@ -1,7 +1,8 @@
 Add Search bar in group add user thingy, so the amount of users gets filtered
 
-#Add a special registration page for adding another librarian
-Add a button to mass delete every user inside a group PLUS the group itself.
+Display users role inside UserManagement Index page.
+Allow librarian to change users role from inside the edit page.
+
 
 optionally make it so users don't need email to be registered, just the phone number.
 

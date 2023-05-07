@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Library.Data;
 
@@ -26,7 +27,15 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAuthorization(options =>
         {
             options.AddPolicy("IsLibrarian", policy => policy.RequireClaim("Role", "Librarian"));
+            //used for registration page
+            options.AddPolicy("IsLibrarianOrNoUsersRegistered", policy =>
+            {
+                policy.AddRequirements(new IsLibrarianOrNoUsersRegisteredRequirement());
+            });
         });
+
+builder.Services.AddScoped<IAuthorizationHandler, IsLibrarianOrNoUsersRegisteredAuthorizationHandler>();
+
 
 var app = builder.Build();
 

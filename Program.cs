@@ -16,7 +16,10 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             options.SignIn.RequireConfirmedEmail = false;
         })
         .AddEntityFrameworkStores<ApplicationDbContext>();
-
+builder.Services.Configure<SecurityStampValidatorOptions>(options =>
+{
+    options.ValidationInterval = TimeSpan.Zero;
+});
 
 builder.Services.AddControllersWithViews();
 

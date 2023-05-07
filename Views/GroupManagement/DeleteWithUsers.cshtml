@@ -1,0 +1,71 @@
+@model Library.Models.GroupModel
+
+@{
+    ViewData["Title"] = "DeleteWithUsers";
+}
+
+<h1>DeleteWithUsers</h1>
+
+<div>
+    <h3 class="text-danger">Įspėjimas: Šis veiksmas ištrins šią grupę ir visus joje esančius vartotojus. Atsargiai peržvelkite vartotojų sąrašą.</h3>
+    <h4>Grupės informacija</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.GroupTeacherName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.GroupTeacherName)
+        </dd>
+    </dl>
+    <hr />
+    <table class="table">
+        <thead>
+            <tr class="row">
+                <th class="col">
+                    Vardas
+                </th>
+                <th class="col">
+                    El. Paštas
+                </th>
+                <th class="col">
+                    Tel. Nr.
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach(var user in @Model.Members)
+        {
+            <tr class="row">
+                <td class="col">
+                    @Html.DisplayFor(modelItem => user.FullName)
+                </td>
+                <td class="col">
+                    @Html.DisplayFor(modelItem => user.Email)
+                </td>
+                <td class="col">
+                    @Html.DisplayFor(modelItem => user.PhoneNumber)
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    
+    <form asp-action="DeleteWithUsersConfirmed">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> 
+        <a class="btn btn-secondary"asp-action="Details" asp-route-id="@Model?.Id">Atgal į grupę</a>
+    </form>
+</div>

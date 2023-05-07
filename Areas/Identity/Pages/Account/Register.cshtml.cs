@@ -78,6 +78,7 @@ namespace Library.Areas.Identity.Pages.Account
         
         public List<GroupModel> GroupList{get;set;}
 
+
         public class InputModel
         {
             /// <summary>
@@ -146,6 +147,8 @@ namespace Library.Areas.Identity.Pages.Account
                 {
                     user.Group = await _context.Groups.FindAsync(Input.SelectedGroupId);
                 }
+
+                user.TempPassword = Input.Password;
 
                 await _userManager.AddClaimAsync(user, new Claim("Role", "User"));
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Library.Data;
 using Library.Models;
@@ -16,10 +17,12 @@ namespace Library.Controllers
     public class GroupManagement : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public GroupManagement(ApplicationDbContext context)
+        public GroupManagement(ApplicationDbContext context, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
+            _signInManager = signInManager;
         }
 
         // GET: GroupManagement
@@ -219,6 +222,44 @@ namespace Library.Controllers
             }
             
             return RedirectToAction("Details", "GroupManagement", new {id = id});
+        }
+        //GET: GroupManagement/DeleteWithUsers/5
+        public async Task<IActionResult> DeleteWithUsers(int? id)
+        {
+            if(id == null || _context.Groups == null)
+            {
+                return NotFound();
+            }
+            var groupModel = await _context.Groups.Include(g => g.Members).FirstOrDefaultAsync(g => g.Id == id);
+            if(groupModel == null)
+            {
+                return NotFound();
+            }
+            return View(groupModel);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        //POST: GroupManagement/DeleteWithUsers/5
+        public async Task<IActionResult> DeleteWithUsersConfirmed(int? Id)
+        {
+            if(Id == null || _context.Groups == null)
+            {
+                return NotFound();
+            }
+            var groupModel = await _context.Groups.Include(g => g.Members).FirstOrDefaultAsync(g => g.Id == Id);
+            if(groupModel == null)
+            {
+                return NotFound();
+            }
+
+            foreach(var user in groupModel.Members)
+            {
+                _context.Users.Remove(user);
+            }
+            _context.Groups.Remove(groupModel);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
         }
 
         private bool GroupModelExists(int id)

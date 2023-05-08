@@ -165,6 +165,7 @@ namespace Library.Areas.Identity.Pages.Account
                 else
                 {
                     roleValue = "Librarian";
+                    user.TempPassword = null;
                 }
                 await _userManager.AddClaimAsync(user, new Claim("Role", roleValue));
 

@@ -197,7 +197,7 @@ namespace Library.Controllers
 
             var applicationUser = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (applicationUser == null || applicationUser.TempPassword == "" || applicationUser.TempPassword == null)
+            if (applicationUser == null || applicationUser.TempPassword == null)
             {
                 return NotFound();
             }
@@ -214,7 +214,7 @@ namespace Library.Controllers
                 return NotFound();
             }
             var applicationUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == Id);
-            if(applicationUser == null || applicationUser.TempPassword == "" || applicationUser.TempPassword == null)
+            if(applicationUser == null || applicationUser.TempPassword == null)
             {
                 return NotFound();
             }
@@ -222,7 +222,7 @@ namespace Library.Controllers
             var csvContent = new StringBuilder();
 
             csvContent.AppendLine("Vardas, Prisijungimo El. Paštas, Slaptažodis");
-            csvContent.AppendLine($"{applicationUser.FullName},{applicationUser.Email},{applicationUser.TempPassword}");
+            csvContent.AppendLine($"{applicationUser.FullName},{applicationUser.UserName},{applicationUser.TempPassword}");
             
             string fileName = $"Login_{applicationUser.FirstName}_{applicationUser.LastName}.csv";
 

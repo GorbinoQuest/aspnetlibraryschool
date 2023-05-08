@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.IO;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Library.Data;
 using Library.Models;
+using CsvHelper;
 
 namespace Library.Controllers
 {
@@ -260,6 +263,53 @@ namespace Library.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
+        }
+        //GET: GroupManagement/GenerateLoginDetails/5
+        public async Task<IActionResult> GenerateLoginDetails(int? id)
+        {
+            if (id == null || _context.Groups == null || _context.Users == null)
+            {
+                return NotFound();
+            }
+            var groupModel = await _context.Groups.Include(g => g.Members).FirstOrDefaultAsync(g => g.Id == id);
+            if (groupModel == null)
+            {
+                return NotFound();
+            }
+            return View(groupModel);
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        //POST: /GroupManagement/GenerateLoginDetails/5
+        public async Task<IActionResult> GenerateLoginDetailsConfirmed(int? Id)
+        {
+            if (Id == null || _context.Groups == null || _context.Users == null)
+            {
+                return NotFound();
+            }
+            var groupModel = await _context.Groups.Include(g => g.Members).FirstOrDefaultAsync(g => g.Id == Id);
+            if (groupModel == null)
+            {
+                return NotFound();
+            }
+            var csvContent = new StringBuilder();
+
+            csvContent.AppendLine("Vardas, Prisijungimo El. Paštas, Slaptažodis");
+
+            foreach(var user in groupModel.Members)
+            {
+                if(user.TempPassword != null)
+                {
+                    csvContent.AppendLine($"{user.FullName},{user.UserName},{user.TempPassword}");
+                }
+            }
+            string fileName = $"Login_{groupModel.Name}.csv";
+
+            var csvBytes = Encoding.UTF8.GetBytes(csvContent.ToString());
+            return File(csvBytes,"text/csv", fileName);
+
+
         }
 
         private bool GroupModelExists(int id)

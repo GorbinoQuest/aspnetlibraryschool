@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Library.Data;
 using Library.Models;
@@ -15,29 +17,48 @@ namespace Library.Controllers
     public class UserManagement : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserManagement(ApplicationDbContext context)
+
+        public UserManagement(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: UserManagement
         public async Task<IActionResult> Index()
         {
-              return _context.Users != null ? 
-                          View(await _context.Users.Include(u => u.Group).ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Users'  is null.");
+            if (_userManager.Users == null)
+            {
+                 Problem("Entity set 'UserManager.Users'  is null.");
+            }
+            //we create a viewmodel that stores both claim value (in this case role) and the user together, so we can print it.
+            var users = await _userManager.Users.Include(u => u.Group).ToListAsync();
+            List<UserManagementViewModel> userManagementViewModels = new List<UserManagementViewModel>();
+            foreach (var user in users)
+            {
+                var role = await _userManager.GetClaimsAsync(user).ContinueWith(claims => claims.Result.FirstOrDefault(c => c.Type == "Role")?.Value);;
+                UserManagementViewModel userManagementViewModel = new UserManagementViewModel 
+                {
+                    User = user,
+                    RoleValue = role,
+                };
+                userManagementViewModels.Add(userManagementViewModel);
+            }
+            return View(userManagementViewModels);
+
         }
 
         // GET: UserManagement/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-            if (id == null || _context.Users == null)
+            if (id == null || _userManager.Users == null)
             {
                 return NotFound();
             }
 
-            var applicationUser = await _context.Users
+            var applicationUser = await _userManager.Users
                 .Include(u => u.Group)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -49,6 +70,9 @@ namespace Library.Controllers
             int? currentGroupId = applicationUser.Group?.Id;
 
             ViewBag.Groups = await _context.Groups.Where(g => g.Id != currentGroupId).ToListAsync();
+            
+            ViewBag.RoleValue = await _userManager.GetClaimsAsync(applicationUser)
+                .ContinueWith(claims => claims.Result.FirstOrDefault(c => c.Type == "Role")?.Value);
 
             return View(applicationUser);
         }
@@ -58,25 +82,26 @@ namespace Library.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("FirstName,LastName,Id,Email,PhoneNumber,Group")] ApplicationUser applicationUser)
+        public async Task<IActionResult> Edit(string id, string RoleValue, [Bind("FirstName,LastName,Id,Email,PhoneNumber,Group")] ApplicationUser applicationUser)
         {
+            Console.WriteLine(RoleValue);
             if (id != applicationUser.Id)
             {
                 return NotFound();
             }
             //we load the real user and then copy the values
-            var applicationUserReal = await _context.Users
+            var applicationUserReal = await _userManager.Users
                 .Include(u => u.Group)
                 .FirstOrDefaultAsync(u => u.Id == id);
             if (applicationUserReal == null)
             {
                 return NotFound();
             }
-
             applicationUserReal.FirstName = applicationUser.FirstName;
             applicationUserReal.LastName = applicationUser.LastName;
             applicationUserReal.Email = applicationUser.Email;
             applicationUserReal.PhoneNumber = applicationUser.PhoneNumber;
+
 
             applicationUserReal.Group = await _context.Groups.FindAsync(applicationUser.Group.Id);
             ModelState.Clear();
@@ -85,8 +110,25 @@ namespace Library.Controllers
                 try
                 {
                     //_context.Entry(applicationUserReal).Reference(x => x.Group).IsModified = true;
-                    _context.Users.Update(applicationUserReal);
-                    await _context.SaveChangesAsync();
+                    if(RoleValue == "User" || RoleValue == "Librarian")
+                    {
+                        var claim = await _userManager.GetClaimsAsync(applicationUserReal).ContinueWith(claims => claims.Result.FirstOrDefault(c => c.Type == "Role"));
+                        if(claim.Value == RoleValue)
+                        {
+                        }
+                        else
+                        {
+                            await _userManager.RemoveClaimAsync(applicationUser, claim);
+
+                            await _userManager.AddClaimAsync(applicationUser, new Claim("Role", RoleValue));
+                        }
+                    }
+
+                    var result = await _userManager.UpdateAsync(applicationUserReal);
+                    if(result.Succeeded)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -99,7 +141,6 @@ namespace Library.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             return await Edit(id);
         }
@@ -143,7 +184,7 @@ namespace Library.Controllers
         //GET: UserManagement/ControlPanel
         public async Task<IActionResult> ControlPanel()
         {
-            return View();
+            return await Task.Run(() => View());
         }
 
         private bool ApplicationUserExists(string id)

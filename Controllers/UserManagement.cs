@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
@@ -109,16 +110,15 @@ namespace Library.Controllers
                 try
                 {
                     //_context.Entry(applicationUserReal).Reference(x => x.Group).IsModified = true;
-                    if(RoleValue == "User" && RoleValue == "Librarian")
+                    if(RoleValue == "User" || RoleValue == "Librarian")
                     {
-                        var claim = await _userManager.GetClaimsAsync(applicationUserReal)
-                            .ContinueWith(claims => claims.Result.FirstOrDefault(c => c.Type == "Role"));
+                        var claim = await _userManager.GetClaimsAsync(applicationUserReal).ContinueWith(claims => claims.Result.FirstOrDefault(c => c.Type == "Role"));
                         if(claim.Value == RoleValue)
                         {
                         }
                         else
                         {
-                            await _userManager.RemoveClaimAsync(applicationUser, "Role");
+                            await _userManager.RemoveClaimAsync(applicationUser, claim);
 
                             await _userManager.AddClaimAsync(applicationUser, new Claim("Role", RoleValue));
                         }

@@ -127,7 +127,7 @@ namespace Library.Controllers
                     var result = await _userManager.UpdateAsync(applicationUserReal);
                     if(result.Succeeded)
                     {
-                        return RedirectToAction(nameof(Index));
+                        return RedirectToAction("Index");
                     }
                 }
                 catch (DbUpdateConcurrencyException)

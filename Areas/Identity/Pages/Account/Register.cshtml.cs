@@ -196,7 +196,8 @@ namespace Library.Areas.Identity.Pages.Account
                     else
                     {
                         //await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        //return LocalRedirect(returnUrl);
+                        return RedirectToAction("Index", "UserManagement");
                     }
                 }
                 foreach (var error in result.Errors)

@@ -1,10 +1,10 @@
 Add Search bar in group add user thingy, so the amount of users gets filtered
 
-Display users role inside UserManagement Index page.
-Allow librarian to change users role from inside the edit page.
+
+make it so through UserManagement/GenerateLoginDetails/Id and GroupManagement/Details/GenerateLoginDetails, admin user can send DefaultPassword to user e-mail. For now, have it generate a .CSV file with user login details (email, generatedPassword). Once an user changes their password inside UserManagement, remove the Temporary password field and disable the GenerateLoginDetails, and don't include their password or entry entirely inside GroupManagement/Details/GenerateLoginDetails
 
 
-optionally make it so users don't need email to be registered, just the phone number.
+
 
 
 

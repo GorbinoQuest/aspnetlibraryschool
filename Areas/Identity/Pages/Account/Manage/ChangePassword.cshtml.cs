@@ -110,9 +110,15 @@ namespace Library.Areas.Identity.Pages.Account.Manage
 
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
             //removing TempPassword in case this is the first time user is changing their password
-            if (user.TempPassword != null || user.TempPassword != "")
+            if (user.TempPassword != null)
             {
                 user.TempPassword = null;
+                //we remove the UsingTempPassword claim to remove the danger message
+                var existingClaim = (await _userManager.GetClaimsAsync(user)).FirstOrDefault(c => c.Type == "UsingTempPassword");
+                if(existingClaim != null)
+                {
+                    await _userManager.RemoveClaimAsync(user, existingClaim);
+                }
                 await _userManager.UpdateAsync(user);
             }
             if (!changePasswordResult.Succeeded)

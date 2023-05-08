@@ -29,6 +29,8 @@ builder.Services.AddAuthorization(options =>
             options.AddPolicy("IsLibrarian", policy => policy.RequireClaim("Role", "Librarian"));
             options.AddPolicy("IsUser", policy => policy.RequireClaim("Role", "User"));
 
+            options.AddPolicy("IsUsingTempPassword", policy => policy.RequireClaim("UsingTempPassword"));
+
             //used for registration page
             options.AddPolicy("IsLibrarianOrNoUsersRegistered", policy =>
             {

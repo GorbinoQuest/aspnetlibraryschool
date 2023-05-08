@@ -161,6 +161,7 @@ namespace Library.Areas.Identity.Pages.Account
                         user.Group = await _context.Groups.FindAsync(Input.SelectedGroupId);
                     }
                     user.TempPassword = Input.Password;
+                    await _userManager.AddClaimAsync(user, new Claim("UsingTempPassword", "true"));
                 }
                 else
                 {

@@ -56,6 +56,12 @@
                 </div>
             </div>
         </nav>
+        @if((await AuthorizationService.AuthorizeAsync(User, "IsUsingTempPassword")).Succeeded)
+        {
+        <div class="alert alert-danger" role="alert">
+            Jūs kol kas nesate nusistatę savo slaptažodžio. Norint naudotis šia biblioteka, rekomenduojame pasikeisti savo slaptažodį <a asp-area="Identity" asp-page="/Account/Manage/ChangePassword">paspaudę čia</a>.
+        </div>
+        }
     </header>
     <div class="container">
         <main role="main" class="pb-3">

@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Library.Data;
 using Library.Models;
+using CsvHelper;
 
 namespace Library.Controllers
 {
@@ -84,7 +87,6 @@ namespace Library.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, string RoleValue, [Bind("FirstName,LastName,Id,Email,PhoneNumber,Group")] ApplicationUser applicationUser)
         {
-            Console.WriteLine(RoleValue);
             if (id != applicationUser.Id)
             {
                 return NotFound();
@@ -185,6 +187,46 @@ namespace Library.Controllers
         public async Task<IActionResult> ControlPanel()
         {
             return await Task.Run(() => View());
+        }
+        public async Task<IActionResult> GenerateLoginDetails(string? id)
+        {
+            if (id == null || _context.Users == null)
+            {
+                return NotFound();
+            }
+
+            var applicationUser = await _context.Users
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (applicationUser == null)
+            {
+                return NotFound();
+            }
+
+
+            return View(applicationUser);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GenerateLoginDetailsConfirm(string? Id)
+        {
+            if(Id == null)
+            {
+                return NotFound();
+            }
+            var applicationUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == Id);
+            var csvContent = new StringBuilder();
+
+            csvContent.AppendLine("Vardas, Prisijungimo El. Paštas, Slaptažodis");
+            csvContent.AppendLine($"{applicationUser.FullName},{applicationUser.Email},{applicationUser.TempPassword}");
+            
+            string fileName = $"Login_{applicationUser.FirstName}_{applicationUser.LastName}.csv";
+
+            var csvBytes = Encoding.UTF8.GetBytes(csvContent.ToString());
+            return File(csvBytes, "text/csv", fileName);
+
+            
+            //return RedirectToAction("Index");
+
         }
 
         private bool ApplicationUserExists(string id)

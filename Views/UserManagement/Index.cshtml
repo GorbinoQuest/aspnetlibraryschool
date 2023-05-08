@@ -57,8 +57,12 @@
                 @Html.DisplayFor(modelItem => item.RoleValue)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.User.Id">Keisti</a> |
-                <a asp-action="Delete" asp-route-id="@item.User.Id">Trinti</a>
+                @if(item.User.TempPassword != "")
+                {
+                    <a class="btn btn-success" asp-action="GenerateLoginDetails" asp-route-id="@item.User.Id">Generuoti Prisijungimą</a>
+                }
+                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.User.Id">Keisti</a>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.User.Id">Trinti</a>
             </td>
         </tr>
 }

@@ -35,12 +35,22 @@
                         @if ((await AuthorizationService.AuthorizeAsync(User, "IsLibrarian")).Succeeded)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="library" asp-action="bookborrowinglist" asp-route-id="">Ataskaita</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Library" asp-action="BookBorrowingList" asp-route-id="">Ataskaita</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="UserManagement" asp-action="ControlPanel" asp-route-id="">Vartotojų/Grupių valdymas</a>
                             </li>
                         }
+                        @if ((await AuthorizationService.AuthorizeAsync(User, "IsUser")).Succeeded)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Library" asp-action="BorrowedUserBooks" asp-route-viewToDirectTo="Debts">Skolos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Library" asp-action="BorrowedUserBooks" asp-route-viewToDirectTo="History">Jūsų Istorija</a>
+                            </li>
+                        }
+
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

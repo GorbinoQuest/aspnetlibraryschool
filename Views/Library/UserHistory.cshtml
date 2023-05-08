@@ -1,0 +1,45 @@
+@model IEnumerable<Library.Models.BorrowingEntryModel>
+
+@{
+    ViewData["Title"] = "Knygų Skolos";
+}
+
+
+<h1>Jūsų pasiimtų knygų istorija</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Knyga
+            </th>
+            <th>
+                Paėmimo data
+            </th>
+            <th>
+                Gražinimo data
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Book.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WhenBorrowed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WhenReturned)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@if(ViewData["id"] != null)
+{
+    <a class="btn btn-secondary" asp-action="Details" asp-route-id="@ViewData["id"]">Atgal</a>
+}
+
+

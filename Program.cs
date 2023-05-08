@@ -27,6 +27,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAuthorization(options =>
         {
             options.AddPolicy("IsLibrarian", policy => policy.RequireClaim("Role", "Librarian"));
+            options.AddPolicy("IsUser", policy => policy.RequireClaim("Role", "User"));
+
             //used for registration page
             options.AddPolicy("IsLibrarianOrNoUsersRegistered", policy =>
             {

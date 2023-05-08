@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Library.Data;
 using Library.Models;
@@ -14,10 +15,12 @@ namespace Library.Controllers
     public class LibraryController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public LibraryController(ApplicationDbContext context)
+        public LibraryController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Library
@@ -242,8 +245,6 @@ namespace Library.Controllers
         //the ID that is passed is the book ID, not the entry ID
         public async Task<IActionResult> ReturnBook(int? originalId)
         {
-            //TODO: Get the latest entry of BorrowingEntryModel and pass it to the view. Set IsAvailable to true if successful
-            //BE SURE TO INCLUDE THE USER WITH .INCLUDE AND BOOK TO KNOW WHERE TO GO BACK
             if (originalId == null || _context.BookBorrowings == null)
             {
                 return NotFound();
@@ -302,7 +303,38 @@ namespace Library.Controllers
             
             return RedirectToAction("Details","Library", new {id = borrowingEntryModel.Book.Id} );
         }
-
+        //GET: Library/BorrowedUserBooks
+        //This controller is to get the current users borrowed but unreturned books.
+        //Also, it can show history if viewToDirectTo = History
+        [Authorize]
+        public async Task<IActionResult> BorrowedUserBooks(string? viewToDirectTo)
+        {
+            if(viewToDirectTo == null && viewToDirectTo != "Debts" && viewToDirectTo != "History")
+            {
+                return NotFound();
+            }
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var currentUserId = await _userManager.GetUserIdAsync(user);
+            Console.WriteLine(currentUserId);
+            var borrowedBooks = await _context.BookBorrowings
+                .Where(b => b.User.Id == currentUserId)
+                .Include(b => b.Book)
+                .OrderByDescending(b => b.Id)
+                .ToListAsync();
+            if (viewToDirectTo == "Debts")
+            {
+                return View(borrowedBooks);
+            }
+            else 
+            {
+                return View("UserHistory", borrowedBooks);
+            }
+        }
+        
         private bool BookModelExists(int id)
         {
             return (_context.Books?.Any(e => e.Id == id)).GetValueOrDefault();

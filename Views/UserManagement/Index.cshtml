@@ -1,4 +1,4 @@
-@model IEnumerable<Library.Data.ApplicationUser>
+@model List<Library.Models.UserManagementViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,23 +13,23 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                @Html.DisplayNameFor(model => model[0].User.FirstName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                @Html.DisplayNameFor(model => model[0].User.LastName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                @Html.DisplayNameFor(model => model[0].User.Email)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
+                @Html.DisplayNameFor(model => model[0].User.PhoneNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Group)
+                @Html.DisplayNameFor(model => model[0].User.Group)
             </th>
-           <!-- <th>
+            <th>
                 Rolė
-            </th>-->
+            </th>
             <th>
                 Pasirinkimai
             </th>
@@ -39,26 +39,26 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
+                @Html.DisplayFor(modelItem => item.User.FirstName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LastName)
+                @Html.DisplayFor(modelItem => item.User.LastName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Email)
+                @Html.DisplayFor(modelItem => item.User.Email)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                @Html.DisplayFor(modelItem => item.User.PhoneNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Group.Name)
+                @Html.DisplayFor(modelItem => item.User.Group.Name)
             </td>
-            <!--<td>
-
-            </td> -->
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Keisti</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Trinti</a>
+                @Html.DisplayFor(modelItem => item.RoleValue)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.User.Id">Keisti</a> |
+                <a asp-action="Delete" asp-route-id="@item.User.Id">Trinti</a>
             </td>
         </tr>
 }

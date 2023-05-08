@@ -43,6 +43,22 @@
                 </select>
             </div>
             <div class="form-group">
+                <label class="control-label">Rolė</label>
+                <select name="RoleValue" class="form-control">
+                    @if(ViewBag.RoleValue == "User")
+                    {
+                        <option value="User">@ViewBag.RoleValue</option>
+                        <option value="Librarian">Librarian</option>
+                    }
+                    else if(ViewBag.RoleValue == "Librarian")
+                    {
+                        <option value="Librarian">@ViewBag.RoleValue</option>
+                        <option value="User">User</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>

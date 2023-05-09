@@ -175,7 +175,7 @@ namespace Library.Controllers
                         .Include(f => f.Book)
                         .Include(f => f.User)
                         .Where(f => f.Book.Id == id)
-                        .OrderByDescending(f => f.Id)
+                        .OrderByDescending(f => f.WhenBorrowed)
                         .ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.BookBorrowings'  is null.");
             }
@@ -185,7 +185,7 @@ namespace Library.Controllers
                     View(await _context.BookBorrowings
                         .Include(f => f.Book)
                         .Include(f => f.User)
-                        .OrderByDescending(f => f.Id)
+                        .OrderByDescending(f => f.WhenBorrowed)
                         .ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.BookBorrowings'  is null.");
             }
@@ -323,7 +323,7 @@ namespace Library.Controllers
             var borrowedBooks = await _context.BookBorrowings
                 .Where(b => b.User.Id == currentUserId)
                 .Include(b => b.Book)
-                .OrderByDescending(b => b.Id)
+                .OrderByDescending(b => b.WhenBorrowed)
                 .ToListAsync();
             if (viewToDirectTo == "Debts")
             {

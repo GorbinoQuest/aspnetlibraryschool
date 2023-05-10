@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: bitnami/dotnet-sdk:latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2

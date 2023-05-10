@@ -15,7 +15,7 @@ public class BookModel
     public string Title {get;set;}
     [Required]
     public string BookAuthor {get;set;}
-    public int? ReleaseDate {get;set;}
+    public string? ReleaseDate {get;set;}
     [Required]
     public string Genre {get;set;}
     

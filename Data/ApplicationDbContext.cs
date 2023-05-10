@@ -28,5 +28,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .WithOne(g => g.Group)
             .OnDelete(DeleteBehavior.SetNull);
 
+        modelBuilder.Entity<ApplicationUser>(entity =>
+        {
+            entity.Property(r => r.Id).HasMaxLength(255);
+        });
+
     }
 }

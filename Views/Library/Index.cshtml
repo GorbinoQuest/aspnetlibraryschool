@@ -1,4 +1,6 @@
 @model IEnumerable<Library.Models.BookModel>
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
 
 @{
     ViewData["Title"] = "Index";
@@ -6,9 +8,12 @@
 
 <h1>Index</h1>
 
+@if ((await AuthorizationService.AuthorizeAsync(User, "IsLibrarian")).Succeeded)
+{
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-success" asp-action="Create">Nauja knyga</a>
 </p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -49,9 +54,7 @@
                 @Html.DisplayFor(modelItem => item.IsAvailable)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Rodyti</a>
             </td>
         </tr>
 }

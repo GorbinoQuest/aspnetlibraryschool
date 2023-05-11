@@ -76,7 +76,8 @@
 
             function filterItems(searchQuery) {
                 $('#bookTable tbody tr').each(function () {
-                    var fieldText = $(this).find('td').text().toLowerCase();
+                    //select every field except last one that is used by buttons
+                    var fieldText = $(this).find('td:not(:last-child)').text().toLowerCase();
                     if (fieldText.includes(searchQuery)) {
                         $(this).show();
                     } else {

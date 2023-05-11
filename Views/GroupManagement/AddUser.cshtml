@@ -1,22 +1,20 @@
 @model Library.Models.GroupModel
 
 @{
-    ViewData["Title"] = "AddUser";
+    ViewData["Title"] = "Vartotojų pridėjimas";
 }
 
-<h1>AddUser</h1>
 
-<h4>GroupModel</h4>
-<hr />
+<h4>Priskirti vartotojus grupei</h4>
+<input class="form-control" aria-label="Search" type="text" id="searchQuery" placeholder="Paieška" />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="AddUser" method="post">
             <div class="text-danger"></div>
             <input for="id" value="@Model.Id" hidden/>
             <div class="form-group">
-                <label>Pasirinkite, ką pridėti/pašalinti iš grupės:</label>
                 <div class="checkbox-list">
-                    <table class="table">
+                    <table class="table" id="addToGroupTable">
                         <thead>
                             <tr>
                                 <th>Pilnas Vardas</th>
@@ -56,4 +54,24 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#searchQuery').on('input', function () {
+                var searchQuery = $(this).val().toLowerCase();
+                filterItems(searchQuery);
+            });
+
+            function filterItems(searchQuery) {
+                $('#addToGroupTable tbody tr').each(function () {
+                    var fieldText = $(this).find('td').text().toLowerCase();
+                    if (fieldText.includes(searchQuery)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            }
+        });
+    </script>
 }

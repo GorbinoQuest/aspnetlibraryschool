@@ -7,9 +7,10 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Kurti grupę</a>
 </p>
-<table class="table">
+<input class="form-control" aria-label="Search" type="text" id="searchQuery" placeholder="Paieška" />
+<table class="table" id="groupTable">
     <thead>
         <tr>
             <th>
@@ -45,3 +46,26 @@
 }
     </tbody>
 </table>
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#searchQuery').on('input', function () {
+                var searchQuery = $(this).val().toLowerCase();
+                filterItems(searchQuery);
+            });
+
+            function filterItems(searchQuery) {
+                $('#groupTable tbody tr').each(function () {
+                    //select every field except last one that is used by buttons
+                    var fieldText = $(this).find('td:not(:last-child)').text().toLowerCase();
+                    if (fieldText.includes(searchQuery)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            }
+        });
+    </script>
+}

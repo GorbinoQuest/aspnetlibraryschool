@@ -1,15 +1,17 @@
 @model List<Library.Models.UserManagementViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Vartotojai";
 }
 
-<h1>Index</h1>
+<h1>Vartotojų sąrašas</h1>
 
 <p>
 <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register" >Naujas Mokinys</a>
 </p>
-<table class="table">
+<input class="form-control" aria-label="Search" type="text" id="searchQuery" placeholder="Paieška" />
+
+<table class="table" id="userTable">
     <thead>
         <tr>
             <th>
@@ -28,7 +30,7 @@
                 @Html.DisplayNameFor(model => model[0].User.Group)
             </th>
             <th>
-                Rolė
+                @Html.DisplayNameFor(model => model[0].RoleValue)
             </th>
             <th>
                 Pasirinkimai
@@ -68,3 +70,25 @@
 }
     </tbody>
 </table>
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#searchQuery').on('input', function () {
+                var searchQuery = $(this).val().toLowerCase();
+                filterItems(searchQuery);
+            });
+
+            function filterItems(searchQuery) {
+                $('#userTable tbody tr').each(function () {
+                    var fieldText = $(this).find('td:not(:last-child)').text().toLowerCase();
+                    if (fieldText.includes(searchQuery)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            }
+        });
+    </script>
+}

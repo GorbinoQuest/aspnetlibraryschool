@@ -14,7 +14,10 @@
     <a class="btn btn-success" asp-action="Create">Nauja knyga</a>
 </p>
 }
-<table class="table">
+
+<input class="form-control" aria-label="Search" type="text" id="searchQuery" placeholder="Paieška" />
+
+<table class="table" id="bookTable">
     <thead>
         <tr>
             <th>
@@ -60,3 +63,27 @@
 }
     </tbody>
 </table>
+
+
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#searchQuery').on('input', function () {
+                var searchQuery = $(this).val().toLowerCase();
+                filterItems(searchQuery);
+            });
+
+            function filterItems(searchQuery) {
+                $('#bookTable tbody tr').each(function () {
+                    var fieldText = $(this).find('td').text().toLowerCase();
+                    if (fieldText.includes(searchQuery)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            }
+        });
+    </script>
+}

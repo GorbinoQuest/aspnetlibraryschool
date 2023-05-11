@@ -27,7 +27,7 @@ namespace Library.Controllers
         public async Task<IActionResult> Index()
         {
               return _context.Books != null ? 
-                          View(await _context.Books.ToListAsync()) :
+                          View(await _context.Books.OrderByDescending(b => b.Id).ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Books'  is null.");
         }
 

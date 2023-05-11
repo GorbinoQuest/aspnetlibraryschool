@@ -1,12 +1,4 @@
-Add Search bar in group add user thingy, so the amount of users gets filtered based on their name
-
-Add search bar inside book catalogue so the books get filtered down as well.
-
-Add history lookup based on user for the librarian
-
 Group duplicate book entries based on their name, author, release date, etc. inside book Catalogue. Show them by using the + sign.
-
-
 
 
 

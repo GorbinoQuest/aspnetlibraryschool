@@ -61,7 +61,7 @@ namespace Library.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy="IsLibrarian")]
-        public async Task<IActionResult> Create([Bind("Title,BookAuthor,ReleaseDate,Genre")] BookModel bookModel)
+        public async Task<IActionResult> Create([Bind("InventoryID,Title,BookAuthor,ReleaseDate,Skyrius")] BookModel bookModel)
         {
             if (ModelState.IsValid)
             {
@@ -95,7 +95,7 @@ namespace Library.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "IsLibrarian")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id","Title,BookAuthor,ReleaseDate,Genre,IsAvailable")] BookModel bookModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id","InventoryID,Title,BookAuthor,ReleaseDate,Skyrius,IsAvailable")] BookModel bookModel)
         {
             if (id != bookModel.Id)
             {

@@ -10,16 +10,28 @@ public class BookModel
 {
     //unique ID of the book
     public int Id {get;set;}
+    
+    [Required]
+    [Display(Name = "Inventoriaus ID")]
+    public string InventoryID {get;set;}
+
     //book's metadata
     [Required]
+    [Display(Name = "Pavadinimas")]
     public string Title {get;set;}
-    [Required]
+
+    [Display(Name = "Autorius")]
     public string BookAuthor {get;set;}
+
+    [Display(Name = "Leidimo Metai")]
     public string? ReleaseDate {get;set;}
+
     [Required]
-    public string Genre {get;set;}
+    [Display(Name = "Skyrius")]
+    public string Skyrius {get;set;}
     
     //is the book in the library or being borrowed. Defaults to true.
+    [Display(Name = "Ar yra bibliotekoje")]
     public bool IsAvailable {get;set;} = true;
 
     public virtual ICollection<BorrowingEntryModel> Borrowings {get;set;} = new List<BorrowingEntryModel>();

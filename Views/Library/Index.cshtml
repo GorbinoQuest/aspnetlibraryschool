@@ -3,10 +3,10 @@
 @inject IAuthorizationService AuthorizationService
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Biblioteka";
 }
 
-<h1>Index</h1>
+<h1>Margaritos Biblioteka</h1>
 
 @if ((await AuthorizationService.AuthorizeAsync(User, "IsLibrarian")).Succeeded)
 {
@@ -18,6 +18,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.InventoryID)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
@@ -25,9 +28,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ReleaseDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Genre)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsAvailable)
@@ -39,6 +39,9 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.InventoryID)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
@@ -46,9 +49,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ReleaseDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Genre)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsAvailable)

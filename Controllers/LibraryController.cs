@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Library.Data;
 using Library.Models;
+using ExcelDataReader;
+
 
 namespace Library.Controllers
 {
@@ -333,6 +335,81 @@ namespace Library.Controllers
             {
                 return View("UserHistory", borrowedBooks);
             }
+        }
+        //GET: Library/ImportFromExcel
+        public async Task<IActionResult> ImportFromExcel()
+        {
+            return View();
+        }
+        //POST: Library/ImportFromExcelUpload
+        [HttpPost]
+        [Authorize(Policy="IsLibrarian")]
+        public async Task<IActionResult> ImportFromExcel(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                ViewBag.Error = "Prašome įkelti tinkamą, ne tuščią excel lapą.";
+                return View();
+            }
+            var fileExtension = Path.GetExtension(file.FileName);
+            if (fileExtension != ".xlsx" && fileExtension != ".xls")
+            {
+                ViewBag.Error = "Prašome įkelti teigingo formato (.xlsx ir .xls) failus.";
+                return View();
+            }
+
+            var bookModels = new List<BookModel>();
+            using (var stream = new MemoryStream())
+            {
+                await file.CopyToAsync(stream);
+                stream.Position = 0;
+                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                {
+                    var result = reader.AsDataSet(new ExcelDataSetConfiguration
+                    {
+                        ConfigureDataTable = _ => new ExcelDataTableConfiguration
+                        {
+                            UseHeaderRow = true,
+                        }
+                    });
+
+                    var dataTable = result.Tables[0];
+
+
+                    char[] delimiterChars = {',', '.'};
+
+                    for (int row = 1; row < dataTable.Rows.Count; row++)
+                    {
+                        string[] bookInventoryID = dataTable.Rows[row]["Invent. Nr."].ToString().Split(delimiterChars);
+                        foreach(var inventoryID in bookInventoryID)
+                        {
+                            var bookModel = new BookModel();
+                            bookModel.InventoryID = inventoryID;
+                            bookModel.Title = dataTable.Rows[row]["Pavadinimas"].ToString();
+                            bookModel.BookAuthor = dataTable.Rows[row]["Autorius"].ToString();
+                            bookModel.ReleaseDate = dataTable.Rows[row]["Metai"].ToString();
+                            bookModel.Skyrius = dataTable.Rows[row]["Skyrius"].ToString();
+                            bookModel.Price = dataTable.Rows[row]["Kaina"].ToString();
+
+                            bookModels.Add(bookModel);
+                        }
+                    }
+                }
+            }
+            return RedirectToAction("ImportFromExcelConfirm", bookModels);
+        }
+
+        [Authorize(Policy="IsLibrarian")]
+        //GET: Library/ImportFromExcelConfirm
+        public async Task<IActionResult> ImportFromExcelConfirm(List<BookModel> bookModels)
+        {
+            var existingInventoryIDs = await _context.Books
+                .Where(b => bookModels.Any(m => m.InventoryID == b.InventoryID))
+                .Select(b => b.InventoryID)
+                .ToListAsync();
+            bookModels = bookModels.Where(b => !existingInventoryIDs.Contains(b.InventoryID)).ToList();
+            return View(bookModels);
         }
         
         private bool BookModelExists(int id)

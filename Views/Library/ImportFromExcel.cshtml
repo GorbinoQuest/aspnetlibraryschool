@@ -1,0 +1,20 @@
+@{
+    ViewData["Title"] = "Įkelti knygas iš excel";
+}
+
+<h3 class="text" >Knygų įkėlimas</h3>
+
+<p class="text-danger">@ViewBag.Error</p>
+<div>
+    <hr />
+
+    <form method="post" enctype="multipart/form-data" asp-action="ImportFromExcel">
+        <div class="form-group">
+        <input type="file" name="File" class="form-control-file" required/>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Įkelti</button>
+    </form>
+</div>
+
+<a class="btn btn-secondary" asp-action="Index">Atgal</a>

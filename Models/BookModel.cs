@@ -29,6 +29,9 @@ public class BookModel
     [Required]
     [Display(Name = "Skyrius")]
     public string Skyrius {get;set;}
+
+    [Display(Name = "Kaina")]
+    public string? Price {get;set;}
     
     //is the book in the library or being borrowed. Defaults to true.
     [Display(Name = "Ar yra bibliotekoje")]

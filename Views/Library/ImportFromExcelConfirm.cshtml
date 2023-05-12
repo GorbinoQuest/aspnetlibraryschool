@@ -1,0 +1,69 @@
+@model IEnumerable<Library.Models.BookModel>
+
+@{
+    ViewData["Title"] = "Importuoti Knygas";
+    var i = 0;
+}
+
+<h1>Knygų pridėjimo patvirtinimas</h1>
+<p class="text-danger">Įdėmiai peržiurėkite šį sąrašą ar yra klaidų!</p>
+
+<form method="post" asp-action="ImportFromExcelConfirmPost">
+    <table class="table" id="bookTable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.InventoryID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BookAuthor)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReleaseDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Skyrius)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InventoryID)
+                    <input type="hidden" name="bookModels[@i].InventoryID" value="@item.InventoryID" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                    <input type="hidden" name="bookModels[@i].Title" value="@item.Title" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookAuthor)
+                    <input type="hidden" name="bookModels[@i].BookAuthor" value="@item.BookAuthor" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReleaseDate)
+                    <input type="hidden" name="bookModels[@i].ReleaseDate" value="@item.ReleaseDate" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                    <input type="hidden" name="bookModels[@i].Price" value="@item.Price" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Skyrius)
+                    <input type="hidden" name="bookModels[@i].Skyrius" value="@item.Skyrius" />
+                </td>
+            </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+    <button class="btn btn-primary" type="submit">Patvirtinti</button>
+    <a class="btn btn-secondary" asp-action="Index">Atgal</a>
+</form>

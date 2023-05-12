@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Library.Data;
+using Microsoft.AspNetCore.Http.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,11 @@ builder.Services.Configure<SecurityStampValidatorOptions>(options =>
     options.ValidationInterval = TimeSpan.Zero;
 });
 
+builder.Services.Configure<FormOptions>(options =>
+    {
+        options.ValueCountLimit = 2048; // Adjust the value count limit as needed
+    });
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddAuthorization(options =>
@@ -43,6 +49,8 @@ builder.Services.AddAuthorization(options =>
         });
 
 builder.Services.AddScoped<IAuthorizationHandler, IsLibrarianOrNoUsersRegisteredAuthorizationHandler>();
+
+builder.Services.AddDistributedMemoryCache();
 
 
 var app = builder.Build();
@@ -66,6 +74,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",

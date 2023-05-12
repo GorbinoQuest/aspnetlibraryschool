@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Library.Data;
 using Library.Models;
 using ExcelDataReader;
+using EFCore.BulkExtensions;
 
 
 namespace Library.Controllers
@@ -337,6 +338,7 @@ namespace Library.Controllers
             }
         }
         //GET: Library/ImportFromExcel
+        [Authorize(Policy="IsLibrarian")]
         public async Task<IActionResult> ImportFromExcel()
         {
             return View();
@@ -397,19 +399,34 @@ namespace Library.Controllers
                     }
                 }
             }
-            return RedirectToAction("ImportFromExcelConfirm", bookModels);
+            return RedirectToAction("ImportFromExcelConfirm",bookModels);
         }
 
         [Authorize(Policy="IsLibrarian")]
         //GET: Library/ImportFromExcelConfirm
         public async Task<IActionResult> ImportFromExcelConfirm(List<BookModel> bookModels)
         {
+            Console.WriteLine("We got here");
             var existingInventoryIDs = await _context.Books
-                .Where(b => bookModels.Any(m => m.InventoryID == b.InventoryID))
                 .Select(b => b.InventoryID)
                 .ToListAsync();
-            bookModels = bookModels.Where(b => !existingInventoryIDs.Contains(b.InventoryID)).ToList();
-            return View(bookModels);
+
+            var bookModelsFiltered = bookModels.Where(b => !existingInventoryIDs.Contains(b.InventoryID)).ToList();
+            return View(bookModelsFiltered);
+        }
+        //POST: Library/ImportFromExcelConfirmPost
+        [HttpPost]
+        [Authorize(Policy="IsLibrarian")]
+        public async Task<IActionResult> ImportFromExcelConfirmPost(List<BookModel> bookModels)
+        {
+            if(bookModels == null)
+            {
+                return NotFound();
+            }
+            await _context.BulkInsertAsync(bookModels);
+            await _context.BulkSaveChangesAsync();
+            return RedirectToAction("Index");
+
         }
         
         private bool BookModelExists(int id)

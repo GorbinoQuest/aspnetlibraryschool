@@ -38,6 +38,9 @@ public class BookModel
     public bool IsAvailable {get;set;} = true;
 
     public virtual ICollection<BorrowingEntryModel> Borrowings {get;set;} = new List<BorrowingEntryModel>();
+    public BookModel()
+    {
 
+    }
 
 }

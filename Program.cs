@@ -29,7 +29,7 @@ builder.Services.Configure<SecurityStampValidatorOptions>(options =>
 
 builder.Services.Configure<FormOptions>(options =>
     {
-        options.ValueCountLimit = 2048; // Adjust the value count limit as needed
+        options.ValueCountLimit = 10024; // Adjust the value count limit as needed
     });
 
 builder.Services.AddControllersWithViews();

@@ -419,7 +419,7 @@ namespace Library.Controllers
         {
             if(bookModels == null)
             {
-                return NotFound();
+                return RedirectToAction("Create");
             }
             await _context.BulkInsertAsync(bookModels);
             await _context.BulkSaveChangesAsync();

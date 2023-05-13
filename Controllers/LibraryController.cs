@@ -343,24 +343,23 @@ namespace Library.Controllers
         {
             return View();
         }
-        //POST: Library/ImportFromExcelUpload
-        [HttpPost]
+        //GET: Library/ImportFromExcelUploadConfirm
         [Authorize(Policy="IsLibrarian")]
-        public async Task<IActionResult> ImportFromExcel(IFormFile file)
+        public async Task<IActionResult> ImportFromExcelConfirm(IFormFile file)
         {
             if (file == null || file.Length == 0)
             {
                 ViewBag.Error = "Prašome įkelti tinkamą, ne tuščią excel lapą.";
-                return View();
+                return View("ImportFromExcel");
             }
             var fileExtension = Path.GetExtension(file.FileName);
             if (fileExtension != ".xlsx" && fileExtension != ".xls")
             {
-                ViewBag.Error = "Prašome įkelti teigingo formato (.xlsx ir .xls) failus.";
-                return View();
+                ViewBag.Error = "Prašome įkelti tinkamo formato (.xlsx ir .xls) failus.";
+                return View("ImportFromExcel");
             }
 
-            var bookModels = new List<BookModel>();
+            List<BookModel> bookModels = new List<BookModel>();
             using (var stream = new MemoryStream())
             {
                 await file.CopyToAsync(stream);
@@ -399,21 +398,20 @@ namespace Library.Controllers
                     }
                 }
             }
-            return RedirectToAction("ImportFromExcelConfirm",bookModels);
-        }
-
-        [Authorize(Policy="IsLibrarian")]
-        //GET: Library/ImportFromExcelConfirm
-        public async Task<IActionResult> ImportFromExcelConfirm(List<BookModel> bookModels)
-        {
-            Console.WriteLine("We got here");
             var existingInventoryIDs = await _context.Books
                 .Select(b => b.InventoryID)
                 .ToListAsync();
-
             var bookModelsFiltered = bookModels.Where(b => !existingInventoryIDs.Contains(b.InventoryID)).ToList();
+
+            if(bookModelsFiltered.Count < 1 && bookModels != null)
+            {
+                ViewBag.Error = "Nerasta naujų knygų.";
+                return View("ImportFromExcel");
+            }
+
             return View(bookModelsFiltered);
         }
+
         //POST: Library/ImportFromExcelConfirmPost
         [HttpPost]
         [Authorize(Policy="IsLibrarian")]

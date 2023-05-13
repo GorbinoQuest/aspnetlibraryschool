@@ -11,14 +11,17 @@
 <div>
     <hr />
 
-    <form method="post" enctype="multipart/form-data" asp-action="ImportFromExcel">
+    <form enctype="multipart/form-data" asp-action="ImportFromExcelConfirm">
         <div class="form-group">
         <input type="file" name="File" class="form-control-file" required/>
         </div>
         <br>
         <button type="submit" class="btn btn-primary">Įkelti</button>
-        <p class="text-danger">@ViewBag.Error</p>
     </form>
 </div>
 
 <a class="btn btn-secondary" asp-action="Index">Atgal</a>
+@if(ViewBag.Error != null)
+{
+    <p class="text-danger"><b>KLAIDA: @ViewBag.Error</b></p>
+}

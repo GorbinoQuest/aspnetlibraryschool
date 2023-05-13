@@ -1,6 +1,6 @@
 Group duplicate book entries based on their name, author, release date, etc. inside book Catalogue. Show them by using the + sign.
 
-
+FIX FILTERING AGAIN
 
 
 

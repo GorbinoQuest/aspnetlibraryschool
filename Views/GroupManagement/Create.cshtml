@@ -1,12 +1,11 @@
 @model Library.Models.GroupModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Nauja grupė";
 }
 
-<h1>Create</h1>
 
-<h4>GroupModel</h4>
+<h4>Kurti naują grupę</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -28,15 +27,13 @@
                 <span asp-validation-for="GroupTeacherName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Kurti grupę" class="btn btn-primary" />
+                <a class="btn btn-secondary" asp-action="Index">Atgal</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

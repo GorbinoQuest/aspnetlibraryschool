@@ -1,12 +1,11 @@
 @model Library.Models.BorrowingEntryModel
 
 @{
-    ViewData["Title"] = "BorrowBook";
+    ViewData["Title"] = "Knygos išdavimas";
 }
 
-<h1>BorrowBook</h1>
 
-<h4>BorrowingEntryModel</h4>
+<h4>Knygos išdavimas</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -15,7 +14,6 @@
             <div class="form-group">
                 <label asp-for="Book" class="control-label"></label>
                 <input asp-for="Book.Id" class="form-control" type="hidden" />
-                <!-- potential security risk, hidden field that can be unhidden by inspect element. if introducing user borrowing capabilties, fix this-->
                 <span class="form-control">@Model.Book.Title</span>
                 <span asp-validation-for="Book.Id" class="text-danger"></span>
             </div>
@@ -24,14 +22,11 @@
                 <select asp-for="User.Id" asp-items="@(new SelectList(ViewBag.Users, "Id", "FullName"))" class="form-control"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Tęsti" class="btn btn-primary" />
+                <a class="btn btn-secondary" asp-action="Details" asp-route-id="@Model?.Book?.Id">Atgal</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

@@ -1,10 +1,10 @@
 @model Library.Models.BorrowingEntryModel
 
 @{
-    ViewData["Title"] = "ReturnBook";
+    ViewData["Title"] = "Knygos gražinimas";
 }
 
-<h1>ReturnBook</h1>
+<h1>Gražinti knygą</h1>
 <div>
     <dl class="row">
         <dt class="col-sm-2">
@@ -34,14 +34,12 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Gražinti" class="btn btn-primary" />
+                <a class="btn btn-secondary" asp-action="Details" asp-route-id="@Model?.Book.Id">Atgal</a>
             </div>
         </form>
     </div>
 </div>
 <br>
-<div>
-    <a class="btn btn-secondary" asp-action="Details" asp-route-id="@Model?.Book.Id">Atgal</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

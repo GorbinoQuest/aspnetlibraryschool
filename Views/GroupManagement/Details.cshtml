@@ -1,10 +1,10 @@
 @model Library.Models.GroupModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = @Model.Name;
 }
 
-<h1>Details</h1>
+<h1>Grupės informacija</h1>
 <div>
     <dl class="row">
         <dt class="col-sm-5">
@@ -32,9 +32,11 @@
     <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model?.Id">Naikinti grupę</a>
     <a class="btn btn-danger" asp-action="DeleteWithUsers" asp-route-id="@Model?.Id"><b>NAIKINTI GRUPĘ SU MOKINIAIS</b></a>
 </div>
+<br>
+<a class="btn btn-secondary" asp-action="Index">Atgal</a>
 
 <br>
-
+<br>
 
 <h1>Žmonės, priklausantys grupei:</h1>
 

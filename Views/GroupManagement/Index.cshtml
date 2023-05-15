@@ -1,10 +1,10 @@
 @model IEnumerable<Library.Models.GroupModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Grupės";
 }
 
-<h1>Index</h1>
+<h1>Grupių sąrašas</h1>
 
 <p>
     <a class="btn btn-primary" asp-action="Create">Kurti grupę</a>
@@ -38,9 +38,9 @@
                 @Html.DisplayFor(modelItem => item.GroupTeacherName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Keisti</a> |
+                <a class="btn btn-success" asp-action="Details" asp-route-id="@item.Id">Rodyti</a> |
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Trinti</a>
             </td>
         </tr>
 }

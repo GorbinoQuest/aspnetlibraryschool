@@ -6,7 +6,6 @@
 
 <div>
     <h3 class="text-primary">Peržvelkite šią formą ir sugeneruokite prisijungimo informaciją visai šiai grupei. Jeigu vartotojas jau prisiregistravęs ir pakeitęs savo slaptažodį, jų prisijungimas nebus generuojamas. </h3>
-    <h4>Grupės informacija</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -77,6 +76,6 @@
     <form asp-action="GenerateLoginDetailsConfirmed">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Sugeneruoti prisijungimus" class="btn btn-primary" /> 
-        <a class="btn btn-secondary"asp-action="Details" asp-route-id="@Model?.Id">Atgal į grupę</a>
+        <a class="btn btn-secondary"asp-action="Details" asp-route-id="@Model?.Id">Atgal</a>
     </form>
 </div>

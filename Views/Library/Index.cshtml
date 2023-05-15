@@ -101,17 +101,15 @@
             var $groups = $('.group');
             var $groupRows = $('.group-row');
             var $groupEntryRows = $('.group-entry-row');
-            var $memberCells = $groupEntryRows.find('td');
+            var $memberCells = $groupEntryRows.find('td:not(:last-child)');
             
             $('#searchQuery').on('input', function () {
                 var searchTerm = $(this).val().trim().toLowerCase();
                 
                 if (searchTerm.length === 0) {
                     $groups.show();
-                    //$groupRows.show();
                 } else {
                     $groups.hide();
-                    //$groupRows.hide();
                     
                     $memberCells.each(function () {
                         var $memberCell = $(this);

@@ -29,8 +29,24 @@ namespace Library.Controllers
         // GET: Library
         public async Task<IActionResult> Index()
         {
+            var bookModels = await _context.Books.OrderByDescending(b => b.Id).ToListAsync();
+            var groupedBookModels = bookModels
+                .GroupBy(b => new {
+                        b.Title,
+                        b.BookAuthor,
+                        b.ReleaseDate,
+                    })
+                .Select(g => new BookGrouping
+                        {
+                            Title = g.Key.Title,
+                            BookAuthor = g.Key.BookAuthor,
+                            ReleaseDate = g.Key.ReleaseDate,
+                            Models = g.ToList(),
+                        })
+                .ToList();
+
               return _context.Books != null ? 
-                          View(await _context.Books.OrderByDescending(b => b.Id).ToListAsync()) :
+                          View(groupedBookModels) :
                           Problem("Entity set 'ApplicationDbContext.Books'  is null.");
         }
 

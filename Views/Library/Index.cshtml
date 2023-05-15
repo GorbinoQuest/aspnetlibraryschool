@@ -1,10 +1,22 @@
-@model IEnumerable<Library.Models.BookModel>
+@model List<BookGrouping>
 @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService AuthorizationService
 
 @{
     ViewData["Title"] = "Biblioteka";
 }
+
+<style>
+    .toggle-button-column {
+        width: 120px; /* Adjust the width as needed */
+    }
+    .toggle-icon {
+        display: inline-block;
+        width: 45px;
+        text-align: center;
+        cursor: pointer;
+    }
+</style>
 
 <h1>Margaritos Biblioteka</h1>
 
@@ -22,70 +34,121 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.InventoryID)
+                Pavadinimas
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                Autorius
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BookAuthor)
+                Metai
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReleaseDate)
+                Inventoriaus ID
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsAvailable)
+                Būsena
             </th>
-            <th></th>
+            <th class="toggle-button-column"></th>
         </tr>
     </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.InventoryID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BookAuthor)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReleaseDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsAvailable)
-            </td>
-            <td>
-                <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Rodyti</a>
-            </td>
-        </tr>
+@foreach (var group in Model) {
+        <tbody class="group">
+            <tr class="group-row">
+                <td>
+                    <b>@group.Title (@group.Models.Count)</b>
+                </td>
+                <td>
+                    <b>@group.BookAuthor</b>
+                </td>
+                <td>
+                    <b>@group.ReleaseDate</b>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <i class="toggle-icon" data-feather="chevron-right"></i>
+                </td>
+            </tr>
+            @foreach(var item in group.Models)
+            {
+            <tr class="group-entry-row">
+                <td>@item.Title</td>
+                <td>@item.BookAuthor</td>
+                <td>@item.ReleaseDate</td>
+                <td>@item.InventoryID</td>
+                <td>@item.Status</td>
+                <td>
+                    <a class="btn btn-success btn-sm" asp-action="Details" asp-route-Id="@item?.Id">Rodyti</a>
+                </td>
+            </tr>
+        }
+        </tbody>
 }
-    </tbody>
 </table>
 
 
 @section scripts {
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+        feather.replace()
+    </script>
     <script>
         $(document).ready(function () {
+            var $groups = $('.group');
+            var $groupRows = $('.group-row');
+            var $groupEntryRows = $('.group-entry-row');
+            var $memberCells = $groupEntryRows.find('td');
+            
             $('#searchQuery').on('input', function () {
-                var searchQuery = $(this).val().toLowerCase();
-                filterItems(searchQuery);
-            });
+                var searchTerm = $(this).val().trim().toLowerCase();
+                
+                if (searchTerm.length === 0) {
+                    $groups.show();
+                    //$groupRows.show();
+                } else {
+                    $groups.hide();
+                    //$groupRows.hide();
+                    
+                    $memberCells.each(function () {
+                        var $memberCell = $(this);
+                        var memberText = $memberCell.text().toLowerCase();
+                        var $groupBody = $memberCell.closest('.group');
 
-            function filterItems(searchQuery) {
-                $('#bookTable tbody tr').each(function () {
-                    //select every field except last one that is used by buttons
-                    var fieldText = $(this).find('td:not(:last-child)').text().toLowerCase();
-                    if (fieldText.includes(searchQuery)) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            }
+                        if (memberText.includes(searchTerm)) {
+                            $groupBody.show();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.group-entry-row').hide(); // Hide all group entries by default
+            
+            $(document).on('click', '.toggle-icon', function () {
+                var $groupRow = $(this).closest('.group-row');
+                var $groupEntries = $groupRow.nextUntil('.group-row');
+                var $toggleIcon = $(this);
+                
+                $groupEntries.toggle();
+                
+                if ($toggleIcon.hasClass('feather-chevron-right')) {
+                    $toggleIcon.replaceWith(feather.icons['chevron-down'].toSvg({
+                        class: 'toggle-icon'
+                    }));
+                } else {
+                    $toggleIcon.replaceWith(feather.icons['chevron-right'].toSvg({
+                        class: 'toggle-icon'
+                    }));
+                }
+                
+            });
+            
         });
     </script>
 }

@@ -34,9 +34,22 @@ public class BookModel
     public string? Price {get;set;}
     
     //is the book in the library or being borrowed. Defaults to true.
-    [Display(Name = "Ar yra bibliotekoje")]
+    [Display(Name = "Būsena")]
     public bool IsAvailable {get;set;} = true;
 
     public virtual ICollection<BorrowingEntryModel> Borrowings {get;set;} = new List<BorrowingEntryModel>();
+
+    public string Status {
+        get{
+            if(IsAvailable)
+            {
+                return $"Laisva";
+            }
+            else
+            {
+                return $"Paimta";
+            }
+        }
+    }
 
 }

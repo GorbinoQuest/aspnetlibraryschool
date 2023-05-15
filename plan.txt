@@ -1,7 +1,1 @@
-Group duplicate book entries based on their name, author, release date, etc. inside book Catalogue. Show them by using the + sign.
-
-FIX FILTERING AGAIN
-
-
-
-When the book QR code is scanned, a link is given to a controller action which checks if the book is available. If it is, redirect user to a view thats responsible for book giving, else redirect to book returning.
+Filter Ataskaita page by group end date

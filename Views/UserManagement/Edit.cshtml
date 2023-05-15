@@ -1,12 +1,11 @@
 @model Library.Data.ApplicationUser
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Keisti vartotoją";
 }
 
-<h1>Edit</h1>
 
-<h4>ApplicationUser</h4>
+<h4>Vartotojo keitimas</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -23,12 +22,12 @@
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
+                <label asp-for="EmailAddress" class="control-label"></label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
+                <label asp-for="PhoneNum" class="control-label"></label>
                 <input asp-for="PhoneNumber" class="form-control" />
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
@@ -59,15 +58,13 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Saugoti" class="btn btn-primary" />
+                <a class="btn btn-secondary" asp-action="Index">Atgal</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

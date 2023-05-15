@@ -9,6 +9,6 @@ To run this on docker completely in production, copy paste:
     },
     
 and put this in second line of appsettings.json, just after the first curly brace {.
-Then build the docker using "docker-compose build".
+Then build the docker using "docker-compose build" and run it using "docker-compose up".
 
 If you want to run this without docker, you're going to have to switch to your own database (providing connection strings and setting correct database types in Program.cs). If there's an issue setting initial migration, try deleting all migrations inside Migrations folder.

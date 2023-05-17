@@ -442,6 +442,38 @@ namespace Library.Controllers
             return RedirectToAction("Index");
 
         }
+        [Authorize(Policy = "IsLibrarian")]
+        public async Task<IActionResult> BookBorrowingListFilter()
+        {
+            return View();
+        }
+        [Authorize(Policy = "IsLibrarian")]
+        [HttpPost]
+        public async Task<IActionResult>BookBorrowingListFiltered(string? IsGroupExpired, string? IsUnreturned)
+        {
+            Console.WriteLine($"{IsGroupExpired}, {IsUnreturned}");
+            if(IsGroupExpired == null && IsUnreturned == null)
+            {
+                return RedirectToAction("BookBorrowingList");
+            }
+            List<BorrowingEntryModel> modelList;
+            //Check what librarian wants to look for, then get the appropriate models.
+            if(IsGroupExpired != null)
+            {
+                modelList = await _context.BookBorrowings.Include(b => b.Book).Include(b => b.User.Group).Where(b => b.User.Group.EndDate < DateTime.Now && b.User.Group != null).ToListAsync();
+            }
+            else
+            {
+                modelList = await _context.BookBorrowings.Include(b => b.Book).ToListAsync();
+            }
+
+            if(IsUnreturned != null)
+            {
+                modelList = modelList.Where(b => b.WhenReturned == null).ToList();
+            }
+            return View("BookBorrowingList", modelList);
+
+        }
         
         private bool BookModelExists(int id)
         {

@@ -1,0 +1,32 @@
+@{
+    ViewData["Title"] = "Filtruoti įrašus";
+}
+
+
+<h4>Pasirinkite, kokius knygų įrašus norite filtruoti:</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="BookBorrowingListFiltered" method="post">
+            <div class="form-group">
+                <label>
+                    Rodyti tik vartotojų įrašus pasibaigusiose grupėse
+                    <input type="checkbox" id="IsGroupExpired" name="IsGroupExpired" value="IsGroupExpired" />
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">
+                    Rodyti tik negražintas knygas
+                    <input type="checkbox" id="IsUnreturned" name="IsUnreturned" value="IsUnreturned" />
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Filtruoti" class="btn btn-primary" />
+                <a class="btn btn-secondary" asp-action="BookBorrowingList">Atgal</a>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+

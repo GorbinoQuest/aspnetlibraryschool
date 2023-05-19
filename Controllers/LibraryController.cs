@@ -338,7 +338,6 @@ namespace Library.Controllers
                 return NotFound();
             }
             var currentUserId = await _userManager.GetUserIdAsync(user);
-            Console.WriteLine(currentUserId);
             var borrowedBooks = await _context.BookBorrowings
                 .Where(b => b.User.Id == currentUserId)
                 .Include(b => b.Book)

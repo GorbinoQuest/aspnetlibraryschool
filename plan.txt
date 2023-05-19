@@ -1,1 +1,3 @@
-Filter Ataskaita page by group end date
+Replace email login system by generated username system (name.lastname[number])
+make e-mail nullable
+mass creation of a group with NEW users (hard)

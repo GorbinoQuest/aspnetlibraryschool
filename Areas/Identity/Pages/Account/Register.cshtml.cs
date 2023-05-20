@@ -78,6 +78,11 @@ namespace Library.Areas.Identity.Pages.Account
         
         public List<GroupModel> GroupList{get;set;}
 
+        public string UserCount {get
+            {
+                return $"{_userManager.Users.Count()}";
+            }}
+
 
         public class InputModel
         {
@@ -93,11 +98,16 @@ namespace Library.Areas.Identity.Pages.Account
             [Display(Name = "Last Name")]
             public string LastName {get;set;}
 
-
             [Required]
+            [Display(Name = "Vartotojo vardas")]
+            public string UserName{get;set;}
+
             [EmailAddress]
             [Display(Name = "Email")]
-            public string Email { get; set; }
+            public string? Email { get; set; }
+            
+            [Display(Name = "PhoneNumber")]
+            public string? PhoneNumber {get;set;}
 
             [BindProperty]
             public int? SelectedGroupId {get;set;}
@@ -150,6 +160,7 @@ namespace Library.Areas.Identity.Pages.Account
 
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
+                user.PhoneNumber = Input.PhoneNumber;
                 
 
                 string roleValue = "User";
@@ -171,7 +182,7 @@ namespace Library.Areas.Identity.Pages.Account
                 await _userManager.AddClaimAsync(user, new Claim("Role", roleValue));
 
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

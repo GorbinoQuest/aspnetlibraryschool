@@ -15,6 +15,9 @@
     <thead>
         <tr>
             <th>
+                Vartotojo Vardas
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model[0].User.FirstName)
             </th>
             <th>
@@ -41,6 +44,9 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.User.UserName)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.User.FirstName)
             </td>
             <td>
@@ -61,10 +67,10 @@
             <td>
                 @if(item.User.TempPassword != null)
                 {
-                    <a class="btn btn-success" asp-action="GenerateLoginDetails" asp-route-id="@item.User.Id">Generuoti Prisijungimą</a>
+                    <a class="btn btn-success btn-sm" asp-action="GenerateLoginDetails" asp-route-id="@item.User.Id">Generuoti Prisijungimą</a>
                 }
-                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.User.Id">Keisti</a>
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.User.Id">Trinti</a>
+                <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.User.Id">Keisti</a>
+                <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.User.Id">Trinti</a>
             </td>
         </tr>
 }

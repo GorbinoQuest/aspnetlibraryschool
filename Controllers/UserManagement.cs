@@ -221,7 +221,7 @@ namespace Library.Controllers
 
             var csvContent = new StringBuilder();
 
-            csvContent.AppendLine("Vardas, Prisijungimo El. Paštas, Slaptažodis");
+            csvContent.AppendLine("Žmogus, Vartotojo Vardas, Slaptažodis");
             csvContent.AppendLine($"{applicationUser.FullName},{applicationUser.UserName},{applicationUser.TempPassword}");
             
             string fileName = $"Login_{applicationUser.FirstName}_{applicationUser.LastName}.csv";

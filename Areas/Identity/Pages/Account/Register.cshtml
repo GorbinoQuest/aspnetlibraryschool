@@ -20,27 +20,39 @@
                 <label>Vartotojo tipas:</label>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email">El. Paštas</label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                <input asp-for="Input.UserName" id="UserName" class="form-control" autocomplete="username" aria-required="true" readonly="readonly"/>
+                <label asp-for="Input.UserName">Vartotojo Vardas</label>
+                <span asp-validation-for="Input.UserName" class="text-danger"></span>
             </div>
+            <input type="hidden" id="Count" value="@Model.UserCount"/>
             <!-- First Name Last Name inputs --!>
             <div class="form-floating mb-3">
-                <input asp-for="Input.FirstName" class="form-control" aria-required="true" placeholder="Vardenis" />
+                <input asp-for="Input.FirstName" id="FirstName" class="form-control" aria-required="true" placeholder="Vardenis" />
                 <label asp-for="Input.FirstName">Vardas</label>
                 <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.LastName" class="form-control" aria-required="true" placeholder="Pavardenis" />
+                <input asp-for="Input.LastName" id="LastName" class="form-control" aria-required="true" placeholder="Pavardenis" />
                 <label asp-for="Input.LastName">Pavardė</label>
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
             </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Email" class="form-control" aria-required="true" placeholder="name@example.com" />
+                <label asp-for="Input.Email">El. Paštas (nebūtina)</label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="860000000" />
+                <label asp-for="Input.PhoneNumber">Telefono Nr. (nebūtina)</label>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+
             <div id="groupContainer" style="display: block;">
                 <div class="form-floating mb-3">
                     <select asp-for="Input.SelectedGroupId" class="form-control" asp-items="@(new SelectList(Model.GroupList, "Id", "Name"))" >
-                        <option value="">Pasirinkite grupę</option>
+                        <option value="">Pasirinkite grupę (nebūtina)</option>
                     </select>
-                    <label asp-for="Input.SelectedGroupId">Grupė (nebūtina)</label>
+                    <label asp-for="Input.SelectedGroupId">Grupė</label>
                     <span asp-validation-for="Input.SelectedGroupId" class="text-danger"></span>
                 </div>
             </div>
@@ -86,6 +98,7 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var showAdditionalFieldsDropdown = document.getElementById('showAdditionalFieldsDropdown');
@@ -97,4 +110,15 @@
             groupContainer.style.display = showAdditionalFieldsDropdown.value === 'false' ? 'block' : 'none';
         });
     });
+</script>
+<script>
+    $(document).ready(function() {
+        var userCount = parseInt($('#Count').val());
+        $('#FirstName, #LastName').on('input', function() {
+        var firstName = $('#FirstName').val();
+        var lastName = $('#LastName').val();
+        var fullName = firstName + '.' + lastName + userCount;
+        $('#UserName').val(fullName);
+    });
+});
 </script>

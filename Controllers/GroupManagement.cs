@@ -295,7 +295,7 @@ namespace Library.Controllers
             }
             var csvContent = new StringBuilder();
 
-            csvContent.AppendLine("Vardas, Prisijungimo El. Paštas, Slaptažodis");
+            csvContent.AppendLine("Žmogus, Vartotojo Vardas, Slaptažodis");
 
             foreach(var user in groupModel.Members)
             {

@@ -398,6 +398,7 @@ namespace Library.Controllers
 
                     for (int row = 1; row < dataTable.Rows.Count; row++)
                     {
+                        try{
                         string[] bookInventoryID = dataTable.Rows[row]["Invent. Nr."].ToString().Split(delimiterChars);
                         foreach(var inventoryID in bookInventoryID)
                         {
@@ -411,6 +412,14 @@ namespace Library.Controllers
 
                             bookModels.Add(bookModel);
                         }
+                        }
+                        catch (System.ArgumentException)
+                        {
+                            ViewBag.Error = "Nerasti tinkami stulpeliai. Prašome atidžiai peržiūrėti jūsų keliamą failą ar tinkamai yra užvadinti stulpeliai, ar nėra nereikalingų tarpų prieš ar po pavadinimo.";
+                            return View("ImportFromExcel");
+           
+                        }
+
                     }
                 }
             }

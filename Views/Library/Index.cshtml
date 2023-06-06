@@ -28,7 +28,14 @@
 </p>
 }
 
-<input class="form-control" aria-label="Search" type="text" id="searchQuery" placeholder="Paieška" />
+<form asp-action="Index" method="get">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Paieška" name="SearchString" value="@ViewData["CurrentFilter"]" />
+        <div class="input-group-append">
+            <input type="submit" value="Ieškoti" class="btn btn-outline-secondary" />
+        </div>
+    </div>
+</form>
 
 <table class="table" id="bookTable">
     <thead>
@@ -96,35 +103,7 @@
     <script>
         feather.replace()
     </script>
-    <script>
-        $(document).ready(function () {
-            var $groups = $('.group');
-            var $groupRows = $('.group-row');
-            var $groupEntryRows = $('.group-entry-row');
-            var $memberCells = $groupEntryRows.find('td:not(:last-child)');
-            
-            $('#searchQuery').on('input', function () {
-                var searchTerm = $(this).val().trim().toLowerCase();
-                
-                if (searchTerm.length === 0) {
-                    $groups.show();
-                } else {
-                    $groups.hide();
-                    
-                    $memberCells.each(function () {
-                        var $memberCell = $(this);
-                        var memberText = $memberCell.text().toLowerCase();
-                        var $groupBody = $memberCell.closest('.group');
-
-                        if (memberText.includes(searchTerm)) {
-                            $groupBody.show();
-                        }
-                    });
-                }
-            });
-        });
-    </script>
-    <script>
+        <script>
         $(document).ready(function () {
             $('.group-entry-row').hide(); // Hide all group entries by default
             

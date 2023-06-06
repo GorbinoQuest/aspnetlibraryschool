@@ -27,11 +27,13 @@ namespace Library.Controllers
         }
 
         // GET: Library
-        public async Task<IActionResult> Index(string? sortOrder)
+        public async Task<IActionResult> Index(string? sortOrder, string? searchString)
         {
             ViewData["TitleSort"] = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
             ViewData["AuthorSort"] = sortOrder == "Author" ? "Author_desc" : "Author";
             ViewData["YearSort"] = sortOrder == "Year" ? "Year_desc" : "Year";
+            ViewData["CurrentFilter"] = searchString;
+
             var bookModels = await _context.Books.ToListAsync();
             var groupedBookModels = bookModels
                 .GroupBy(b => new {
@@ -46,6 +48,12 @@ namespace Library.Controllers
                             ReleaseDate = g.Key.ReleaseDate,
                             Models = g.ToList(),
                         });
+            if(!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToUpper();
+                groupedBookModels = groupedBookModels.Where(g => g.Title.ToUpper().Contains(searchString) || g.BookAuthor.ToUpper().Contains(searchString) || g.ReleaseDate.ToUpper().Contains(searchString));
+            }
+
             switch (sortOrder)
             {
                 case "title_desc":

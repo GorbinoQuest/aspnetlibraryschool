@@ -27,9 +27,12 @@ namespace Library.Controllers
         }
 
         // GET: Library
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? sortOrder)
         {
-            var bookModels = await _context.Books.OrderByDescending(b => b.Id).ToListAsync();
+            ViewData["TitleSort"] = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
+            ViewData["AuthorSort"] = sortOrder == "Author" ? "Author_desc" : "Author";
+            ViewData["YearSort"] = sortOrder == "Year" ? "Year_desc" : "Year";
+            var bookModels = await _context.Books.ToListAsync();
             var groupedBookModels = bookModels
                 .GroupBy(b => new {
                         b.Title,
@@ -42,12 +45,31 @@ namespace Library.Controllers
                             BookAuthor = g.Key.BookAuthor,
                             ReleaseDate = g.Key.ReleaseDate,
                             Models = g.ToList(),
-                        })
-                .ToList();
-
-              return _context.Books != null ? 
-                          View(groupedBookModels) :
-                          Problem("Entity set 'ApplicationDbContext.Books'  is null.");
+                        });
+            switch (sortOrder)
+            {
+                case "title_desc":
+                    groupedBookModels = groupedBookModels.OrderByDescending(b => b.Title);
+                    break;
+                case "Author":
+                    groupedBookModels = groupedBookModels.OrderBy(b => b.BookAuthor);
+                    break;
+                case "author_desc":
+                    groupedBookModels = groupedBookModels.OrderByDescending(b => b.BookAuthor);
+                    break;
+                case "Year":
+                    groupedBookModels = groupedBookModels.OrderBy(b => b.ReleaseDate);
+                    break;
+                case "Year_desc":
+                    groupedBookModels = groupedBookModels.OrderByDescending(b => b.ReleaseDate);
+                    break;
+                default:
+                    groupedBookModels = groupedBookModels.OrderBy(b => b.Title);
+                    break;
+            }
+            return _context.Books != null ? 
+                        View(groupedBookModels.ToList()) :
+                        Problem("Entity set 'ApplicationDbContext.Books'  is null.");
         }
 
         // GET: Library/Details/5
@@ -408,11 +430,11 @@ namespace Library.Controllers
                         {
                             var bookModel = new BookModel();
                             bookModel.InventoryID = inventoryID;
-                            bookModel.Title = dataTable.Rows[row]["Pavadinimas"].ToString();
-                            bookModel.BookAuthor = dataTable.Rows[row]["Autorius"].ToString();
-                            bookModel.ReleaseDate = dataTable.Rows[row]["Metai"].ToString();
-                            bookModel.Skyrius = dataTable.Rows[row]["Skyrius"].ToString();
-                            bookModel.Price = dataTable.Rows[row]["Kaina"].ToString();
+                            bookModel.Title = dataTable.Rows[row]["Pavadinimas"].ToString().Trim();
+                            bookModel.BookAuthor = dataTable.Rows[row]["Autorius"].ToString().Trim();
+                            bookModel.ReleaseDate = dataTable.Rows[row]["Metai"].ToString().Trim();
+                            bookModel.Skyrius = dataTable.Rows[row]["Skyrius"].ToString().Trim();
+                            bookModel.Price = dataTable.Rows[row]["Kaina"].ToString().Trim();
 
                             bookModels.Add(bookModel);
                         }

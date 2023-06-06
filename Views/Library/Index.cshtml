@@ -34,13 +34,13 @@
     <thead>
         <tr>
             <th>
-                Pavadinimas
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["TitleSort"]">@Html.DisplayNameFor(b => b[0].Title)</a>
             </th>
             <th>
-                Autorius
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["AuthorSort"]">@Html.DisplayNameFor(b => b[0].BookAuthor)</a>
             </th>
             <th>
-                Metai
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["YearSort"]">@Html.DisplayNameFor(b => b[0].ReleaseDate)</a>
             </th>
             <th>
                 Inventoriaus ID

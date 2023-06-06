@@ -1,0 +1,30 @@
+@{
+    ViewData["Title"] = "Masinis vartotojų kūrimas";
+}
+
+<h3 class="text" >Masinis vartotojų kūrimas ir įkėlimas į grupę <span class="text-success">@ViewBag.GroupName</span>.</h3>
+
+<h4 class="text-primary">Norint įkelti vartotojų duomenis iš excel failo, yra šie reikalavimai:</h4>
+<p> - Failo formatas turi būti .xlsx arba .xls</p>
+<p> - Failas turi nebūti tuščias</p>
+<p> - Faile turi būti nurodyti šie stulpeliai (be kabučių): "Vardas", "Pavardė". Taip pat gali būti nurodyti stulpeliai "El. Paštas", "Tel. Nr.", tačiau šie stulpeliai nėra būtini.</p>
+<div>
+    <hr />
+
+    <h5 class="text-warning">Įspėjimas! Šiuo būdu prašome įkelti tik naujus mokinius, kurie nėra registruoti bibliotekos sistemoje. Įkeliant egzistuojančius mokinius kaip naujus gali kilti duplikacinės problemos.</h5>
+    <form enctype="multipart/form-data" asp-action="ImportFromExcelConfirm">
+        <div class="form-group">
+            <input type="file" name="File" class="form-control-file" required/>
+        </div>
+        <br>
+        <input hidden="true" name="groupId" value="@ViewBag.GroupId">
+        <input hidden="true" name="groupName" value="@ViewBag.GroupName">
+        <button type="submit" class="btn btn-primary">Įkelti</button>
+        <a class="btn btn-secondary" asp-action="Index">Atgal</a>
+    </form>
+</div>
+
+@if(ViewBag.Error != null)
+{
+    <p class="text-danger"><b>KLAIDA: @ViewBag.Error</b></p>
+}

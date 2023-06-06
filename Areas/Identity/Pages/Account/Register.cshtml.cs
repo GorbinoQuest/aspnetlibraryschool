@@ -151,7 +151,7 @@ namespace Library.Areas.Identity.Pages.Account
             {
                 ModelState.Remove("Input.Password");
                 ModelState.Remove("Input.ConfirmPassword");
-                Input.Password = GeneratePassword(9);
+                Input.Password = RandomStringGenerator.GeneratePassword(9);
                 Input.ConfirmPassword = Input.Password;
             }
             if (ModelState.IsValid)
@@ -253,21 +253,5 @@ namespace Library.Areas.Identity.Pages.Account
             return (IUserEmailStore<ApplicationUser>)_userStore;
         }
 
-        private static string GeneratePassword(int length = 8)
-        {
-            const string validChars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*?_-";
-            var random = new Random();
-
-            var chars = new char[length+2];
-            for (int i = 0; i < length; i++)
-            {
-                chars[i] = validChars[random.Next(validChars.Length)];
-            }
-            chars[length-2] = 'b';
-            chars[length-1] = 'A';
-            chars[length] = '0';
-            chars[length+1] = '!';
-            return new string(chars);
-        }
-    }
+           }
 }

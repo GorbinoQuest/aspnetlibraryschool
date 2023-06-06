@@ -1,0 +1,52 @@
+@model IEnumerable<Library.Models.UserModel>
+
+@{
+    ViewData["Title"] = "Masinis vartotojų įkėlimas";
+    var i = 0;
+}
+
+<h1>Vartotojų pridėjimo prie grupės @ViewBag.GroupName įkėlimas</h1>
+<p class="text-danger">Įdėmiai peržiurėkite šį sąrašą ar yra klaidų! Taip pat įsitikinkite, jog šie vartotojai nėra šiuo metu registruoti sistemoje!</p>
+
+<form method="post" asp-action="ImportFromExcelConfirmPost">
+    <table class="table" id="bookTable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model) {
+            <tr>
+                <td>
+                    <input name="userModels[@i].FirstName" value="@item.FirstName" required />
+                </td>
+                <td>
+                    <input name="userModels[@i].LastName" value="@item.LastName" required />
+                </td>
+                <td>
+                    <input name="userModels[@i].Email" value="@item.Email" />
+                </td>
+                <td>
+                    <input name="userModels[@i].PhoneNumber" value="@item.PhoneNumber" />
+                </td>
+             </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+    <input type="hidden" name="groupId" value="@ViewBag.GroupId">
+    <button class="btn btn-primary" type="submit">Patvirtinti</button>
+    <a class="btn btn-secondary" asp-action="Index">Atgal</a>
+</form>

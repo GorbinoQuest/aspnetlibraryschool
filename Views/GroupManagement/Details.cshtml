@@ -40,8 +40,8 @@
 
 <h1>Žmonės, priklausantys grupei:</h1>
 
-
-<a class="btn btn-success" asp-action="AddUser" asp-route-id="@Model?.Id">Pridėti mokinius</a>
+<a class="btn btn-success" asp-action="ImportFromExcel" asp-route-id="@Model?.Id">Importuoti naujus mokinius į grupę iš excel failo</a>
+<a class="btn btn-warning" asp-action="AddUser" asp-route-id="@Model?.Id">Pridėti/Išmesti mokinius iš grupės</a>
 <br>
 <br>
 <input class="form-control" aria-label="Search" type="text" id="searchQuery" placeholder="Paieška" />

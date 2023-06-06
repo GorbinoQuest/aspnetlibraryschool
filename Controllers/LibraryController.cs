@@ -400,7 +400,7 @@ namespace Library.Controllers
 
                     char[] delimiterChars = {',', '.'};
 
-                    for (int row = 1; row < dataTable.Rows.Count; row++)
+                    for (int row = 0; row < dataTable.Rows.Count; row++)
                     {
                         try{
                         string[] bookInventoryID = dataTable.Rows[row]["Invent. Nr."].ToString().Split(delimiterChars);

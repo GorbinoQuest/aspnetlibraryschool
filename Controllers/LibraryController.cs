@@ -392,7 +392,11 @@ namespace Library.Controllers
                     });
 
                     var dataTable = result.Tables[0];
-
+                    int temp = 0;
+                    foreach(var c in dataTable.Columns){
+                        dataTable.Columns[temp].ColumnName = dataTable.Columns[temp].ColumnName.Trim();
+                        temp++;
+                    }
 
                     char[] delimiterChars = {',', '.'};
 

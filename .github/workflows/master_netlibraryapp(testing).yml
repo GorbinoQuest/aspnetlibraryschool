@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'testing'
+      name: 'main'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
@@ -52,6 +52,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'netlibraryapp'
-          slot-name: 'testing'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6AB30E9F90824DCEAC25866C471C648C }}
           package: .

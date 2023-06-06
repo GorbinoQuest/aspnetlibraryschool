@@ -426,6 +426,8 @@ namespace Library.Controllers
                 return NotFound();
             }
             int groupIdInt = Int32.Parse(groupId);
+            var group = await _context.Groups.FindAsync(groupIdInt);
+
             var currentUserCount = _userManager.Users.Count();
             foreach(var u in userModels)
             {
@@ -435,7 +437,7 @@ namespace Library.Controllers
                     string randomPassword = RandomStringGenerator.GeneratePassword(9);
 
                     var user = new ApplicationUser { UserName = userName, FirstName = u.FirstName, LastName = u.LastName, Email = u.Email, PhoneNumber = u.PhoneNumber, TempPassword = randomPassword };
-                    user.Group = await _context.Groups.FindAsync(groupIdInt);
+                    user.Group = group;
 
                     var result = await _userManager.CreateAsync(user, randomPassword);
                     if(result.Succeeded)

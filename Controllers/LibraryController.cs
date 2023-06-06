@@ -27,14 +27,25 @@ namespace Library.Controllers
         }
 
         // GET: Library
-        public async Task<IActionResult> Index(string? sortOrder, string? searchString)
+        public async Task<IActionResult> Index(string? sortOrder, string? currentFilter, string? searchString, int? pageNumber)
         {
+            ViewData["CurrentSort"] = sortOrder;
             ViewData["TitleSort"] = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
             ViewData["AuthorSort"] = sortOrder == "Author" ? "Author_desc" : "Author";
             ViewData["YearSort"] = sortOrder == "Year" ? "Year_desc" : "Year";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            
             ViewData["CurrentFilter"] = searchString;
 
-            var bookModels = await _context.Books.ToListAsync();
+            var bookModels = _context.Books;
             var groupedBookModels = bookModels
                 .GroupBy(b => new {
                         b.Title,
@@ -75,8 +86,9 @@ namespace Library.Controllers
                     groupedBookModels = groupedBookModels.OrderBy(b => b.Title);
                     break;
             }
+            int pageSize = 20;
             return _context.Books != null ? 
-                        View(groupedBookModels.ToList()) :
+                        View(await PaginatedList<BookGrouping>.CreateAsync(groupedBookModels, pageNumber ?? 1, pageSize)) :
                         Problem("Entity set 'ApplicationDbContext.Books'  is null.");
         }
 

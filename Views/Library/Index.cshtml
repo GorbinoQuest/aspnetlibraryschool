@@ -1,4 +1,4 @@
-@model List<BookGrouping>
+@model PaginatedList<BookGrouping>
 @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService AuthorizationService
 
@@ -41,13 +41,13 @@
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["TitleSort"]">@Html.DisplayNameFor(b => b[0].Title)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["TitleSort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(b => b[0].Title)</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["AuthorSort"]">@Html.DisplayNameFor(b => b[0].BookAuthor)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["AuthorSort"]"  asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(b => b[0].BookAuthor)</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["YearSort"]">@Html.DisplayNameFor(b => b[0].ReleaseDate)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["YearSort"]"  asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(b => b[0].ReleaseDate)</a>
             </th>
             <th>
                 Inventoriaus ID
@@ -94,7 +94,27 @@
         </tbody>
 }
 </table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
 
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+
+   class="btn btn-secondary @prevDisabled">
+    Praeitas
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+
+   class="btn btn-secondary @nextDisabled">
+    Kitas
+</a>
 
 @section scripts {
 

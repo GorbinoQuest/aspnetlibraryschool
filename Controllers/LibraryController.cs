@@ -469,18 +469,24 @@ namespace Library.Controllers
                     }
                 }
             }
-            var existingInventoryIDs = await _context.Books
-                .Select(b => b.InventoryID)
+            var existingBooks = await _context.Books
+                .Select(b => new BookModel 
+                        {
+                        InventoryID = b.InventoryID,
+                        Title = b.Title})
                 .ToListAsync();
-            var bookModelsFiltered = bookModels.Where(b => !existingInventoryIDs.Contains(b.InventoryID)).ToList();
+            //get all books with unique inventory ID and title combinations
+            var newBooks = bookModels.Where(n => !existingBooks.Any(e => e.InventoryID == n.InventoryID && e.Title == n.Title)).ToList();
 
-            if(bookModelsFiltered.Count < 1 && bookModels != null)
+
+
+            if(newBooks.Count < 1 && newBooks != null)
             {
                 ViewBag.Error = "Nerasta naujų knygų.";
                 return View("ImportFromExcel");
             }
 
-            return View(bookModelsFiltered);
+            return View(newBooks);
         }
 
         //POST: Library/ImportFromExcelConfirmPost

@@ -37,6 +37,9 @@ public class BookModel
     [Display(Name = "Ar yra bibliotekoje?")]
     public bool IsAvailable {get;set;} = true;
 
+    [Display(Name = "Valiuta")]
+    public string? Currency {get;set;}
+
     public virtual ICollection<BorrowingEntryModel> Borrowings {get;set;} = new List<BorrowingEntryModel>();
     [Display(Name = "Būsena")]
     public string Status {

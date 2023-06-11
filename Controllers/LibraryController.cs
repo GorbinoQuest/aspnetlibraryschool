@@ -122,7 +122,7 @@ namespace Library.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy="IsLibrarian")]
-        public async Task<IActionResult> Create([Bind("InventoryID,Title,BookAuthor,ReleaseDate,Skyrius")] BookModel bookModel)
+        public async Task<IActionResult> Create([Bind("InventoryID,Title,BookAuthor,ReleaseDate,Skyrius, Price, Currency")] BookModel bookModel)
         {
             if (ModelState.IsValid)
             {
@@ -435,11 +435,18 @@ namespace Library.Controllers
 
                     var dataTable = result.Tables[0];
                     int temp = 0;
+                    bool hasCurrency = false;
+
                     foreach(var c in dataTable.Columns){
                         dataTable.Columns[temp].ColumnName = dataTable.Columns[temp].ColumnName.Trim();
+                        if(dataTable.Columns[temp].ColumnName == "Valiuta")
+                        {
+                            hasCurrency = true;
+                        }
                         temp++;
+                        
                     }
-
+                    Console.WriteLine(hasCurrency);
                     char[] delimiterChars = {',', '.'};
 
                     for (int row = 0; row < dataTable.Rows.Count; row++)
@@ -455,6 +462,10 @@ namespace Library.Controllers
                             bookModel.ReleaseDate = dataTable.Rows[row]["Metai"].ToString().Trim();
                             bookModel.Skyrius = dataTable.Rows[row]["Skyrius"].ToString().Trim();
                             bookModel.Price = dataTable.Rows[row]["Kaina"].ToString().Trim();
+                            if(hasCurrency)
+                            {
+                                bookModel.Currency = dataTable.Rows[row]["Valiuta"].ToString().Trim();
+                            }
 
                             bookModels.Add(bookModel);
                         }
@@ -478,9 +489,8 @@ namespace Library.Controllers
             //get all books with unique inventory ID and title combinations
             var newBooks = bookModels.Where(n => !existingBooks.Any(e => e.InventoryID == n.InventoryID && e.Title == n.Title)).ToList();
 
+
             ViewBag.NotIncludedBooks = existingBooks.Except(newBooks).ToList();
-
-
 
             if(newBooks.Count < 1 && newBooks != null)
             {

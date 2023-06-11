@@ -23,15 +23,18 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in ViewBag.NotIncludedBooks as IEnumerable<BookModel>) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.InventoryID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-            </tr>
+            @if(ViewBag.NotIncludedBooks as IEnumerable<BookModel> != null)
+            {
+                @foreach (var item in ViewBag.NotIncludedBooks as IEnumerable<BookModel>) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InventoryID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                </tr>
+                }
             }
         </tbody>
     </table>
@@ -61,6 +64,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Skyrius)
                 </th>
+                <th>
+
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -89,6 +95,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Skyrius)
                     <input type="hidden" name="bookModels[@i].Skyrius" value="@item.Skyrius" />
+                </td>
+                <td>
+                    <input type="hidden" name="bookModels[@i].Currency" value="@item.Currency" />
                 </td>
             </tr>
                 i++;

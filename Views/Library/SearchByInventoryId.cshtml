@@ -1,0 +1,58 @@
+@model IEnumerable<Library.Models.BookModel>
+
+@{
+    ViewData["Title"] = "Knygos paieška pagal ID";
+}
+
+
+<h1>Knygos pagal ID paieška</h1>
+
+
+<form asp-action="SearchByInventoryId" method="get">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Paieška" name="searchQuery" value="@ViewBag.CurrentQuery" />
+        <div class="input-group-append">
+            <input type="submit" value="Ieškoti" class="btn btn-outline-secondary" />
+        </div>
+    </div>
+</form>
+
+<table class="table" id="bookTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(b => b.InventoryID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(b => b.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(b => b.BookAuthor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(b => b.ReleaseDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(b => b.Status)
+            </th>
+            <th class="toggle-button-column"></th>
+        </tr>
+    </thead>
+    <tbody class="group">
+        @foreach(var item in Model)
+        {
+        <tr class="group-entry-row">
+            <td>@item.InventoryID</td>
+            <td>@item.Title</td>
+            <td>@item.BookAuthor</td>
+            <td>@item.ReleaseDate</td>
+            <td>@item.Status</td>
+            <td>
+                <a class="btn btn-success btn-sm" asp-action="Details" asp-route-Id="@item?.Id">Rodyti</a>
+            </td>
+        </tr>
+        }
+        </tbody>
+</table>
+
+<a class="btn btn-secondary" asp-action="Index">Atgal į biblioteką</a>

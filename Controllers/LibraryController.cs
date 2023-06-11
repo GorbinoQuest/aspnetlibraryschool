@@ -536,6 +536,21 @@ namespace Library.Controllers
 
         }
         
+        //GET: Library/SearchByInventoryId
+        [Authorize(Policy = "IsLibrarian")]
+        public async Task<IActionResult> SearchByInventoryId(string searchQuery)
+        {
+            List<BookModel> bookModels = new List<BookModel>();
+
+            if(!String.IsNullOrEmpty(searchQuery))
+            {
+                bookModels = await _context.Books.Where(b => b.InventoryID == searchQuery).ToListAsync();
+                ViewBag.CurrentQuery = searchQuery;
+
+            }
+            return View(bookModels);
+        }
+        
         private bool BookModelExists(int id)
         {
             return (_context.Books?.Any(e => e.Id == id)).GetValueOrDefault();

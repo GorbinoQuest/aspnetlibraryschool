@@ -8,6 +8,37 @@
 <h1>Knygų pridėjimo patvirtinimas</h1>
 <p class="text-danger">Įdėmiai peržiurėkite šį sąrašą ar yra klaidų!</p>
 
+<details>
+    <summary>Rodyti knygas, kurios nebus pridėtos:</summary>
+    <h4 class="text-danger">Šios knygos nebus pridėtos prie bibliotekos, nes sistema rado jas bibliotekoje. Jeigu galvojate kad tai klaida, prašome įkelti knygas po vieną <a asp-action="Create">čia</a>.</h4>
+    <table class="table" id="invalidBookTable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.InventoryID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.NotIncludedBooks as IEnumerable<BookModel>) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InventoryID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+</details>
+<br>
+<h4 class="text-success">Šios knygos bus įkeltos į biblioteką:</h4>
 <form method="post" asp-action="ImportFromExcelConfirmPost">
     <table class="table" id="bookTable">
         <thead>

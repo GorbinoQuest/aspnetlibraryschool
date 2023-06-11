@@ -478,6 +478,8 @@ namespace Library.Controllers
             //get all books with unique inventory ID and title combinations
             var newBooks = bookModels.Where(n => !existingBooks.Any(e => e.InventoryID == n.InventoryID && e.Title == n.Title)).ToList();
 
+            ViewBag.NotIncludedBooks = existingBooks.Except(newBooks).ToList();
+
 
 
             if(newBooks.Count < 1 && newBooks != null)

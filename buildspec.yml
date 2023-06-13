@@ -2,7 +2,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      dotnet: 6.0
+      dotnet: 7.0
   pre_build:
     commands:
       - dotnet restore Library.csproj

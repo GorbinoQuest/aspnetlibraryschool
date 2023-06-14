@@ -1,10 +1,10 @@
-FROM bitnami/dotnet-sdk:latest AS build-env
+FROM bitnami/dotnet-sdk:7 AS build-env
 WORKDIR /App
 COPY . ./
 RUN dotnet restore
 RUN dotnet publish -c Release -o out
 
-FROM bitnami/aspnet-core:latest
+FROM bitnami/aspnet-core:7
 WORKDIR /App
 COPY --from=build-env /App/out .
 EXPOSE 5000

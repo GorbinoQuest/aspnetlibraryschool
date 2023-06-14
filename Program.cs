@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 string connectionString = "";
 if(builder.Environment.IsProduction())
 {
-    connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");  
+    connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 }
 else
 {
